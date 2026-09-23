@@ -5,6 +5,8 @@ import HomePage from "./pages/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SignInPage from "./pages/auth/SignInPage";
 import SignUpPage from "./pages/auth/SignUpPage";
+import AccountPage from "./pages/AccountPage";
+import ProtectedRoute from "./pages/auth/ProtectedRoute";
 
 export default function App() {
   return (
@@ -20,6 +22,9 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Root />}>
           <Route index element={<HomePage />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="account" element={<AccountPage />} />
+          </Route>
         </Route>
         <Route path="/sign-in/*" element={<SignInPage />} />
         <Route path="/sign-up/*" element={<SignUpPage />} />

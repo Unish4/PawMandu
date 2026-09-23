@@ -14,10 +14,6 @@ export interface CurrentUser {
 export function useCurrentUser() {
   const { isSignedIn, userId } = useAuth();
 
-  if (!userId) {
-    throw new Error("User ID is missing");
-  }
-
   return useQuery<CurrentUser>({
     queryKey: ["currentUser", userId],
     queryFn: () => api.get("/users/me").then((res) => res.data.user),

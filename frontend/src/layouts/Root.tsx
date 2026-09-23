@@ -2,6 +2,7 @@ import { Outlet, Link, useLocation } from "react-router";
 import { PawPrint, ShoppingCart } from "lucide-react";
 import { Show, UserButton } from "@clerk/react";
 import { SearchInput } from "../components/ui";
+import { User } from "lucide-react";
 
 export default function Root() {
   const location = useLocation();
@@ -46,8 +47,16 @@ export default function Root() {
           </button>
 
           <Show when="signed-in">
+            <Link
+              aria-label="My Account"
+              to="/account"
+              className="w-10 h-10 rounded-[var(--radius-md)] flex items-center justify-center hover:bg-neutral-100 text-[var(--color-text-secondary)]"
+            >
+              <User size={20} />
+            </Link>
             <UserButton appearance={{ elements: { avatarBox: "w-9 h-9" } }} />
           </Show>
+
           <Show when="signed-out">
             <div className="flex items-center gap-1.5">
               <Link
