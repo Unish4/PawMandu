@@ -16,6 +16,7 @@ export const listProducts = async (
       maxPrice,
       inStock,
       sort,
+      search,
       page = "1",
       limit = "12",
     } = req.query;
@@ -30,7 +31,9 @@ export const listProducts = async (
         ...(maxPrice && { $lte: Number(maxPrice) }),
       };
     }
-
+    if (search) {
+      filter.name = { $regex: String(search), $options: "i" };
+    }
     const sortMap: Record<string, Record<string, 1 | -1>> = {
       price_asc: { price: 1 },
       price_desc: { price: -1 },
@@ -39,8 +42,6 @@ export const listProducts = async (
     const sortOption = sortMap[String(sort)] ?? { createdAt: -1 };
 
     const pageNum = Math.max(1, Number(page));
-    // Capped at 50 regardless of what the client asks for — an
-    // unbounded ?limit= would let anyone force a very expensive query.
     const limitNum = Math.min(50, Math.max(1, Number(limit)));
     const skip = (pageNum - 1) * limitNum;
 
