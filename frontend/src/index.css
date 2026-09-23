@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-  /* Colors — from the confirmed design system */
   --color-primary: #0f766e;
   --color-primary-dark: #115e59;
   --color-primary-light: #f0fdfa;
@@ -15,7 +14,6 @@
   --color-accent: #d97706;
   --color-whatsapp: #25d366;
 
-  /* Order status */
   --color-status-placed: #1d4ed8;
   --color-status-placed-bg: #eff6ff;
   --color-status-processing: #b45309;
@@ -25,7 +23,6 @@
   --color-status-cancelled: #b91c1c;
   --color-status-cancelled-bg: #fef2f2;
 
-  /* Species tags */
   --color-species-dog: #92400e;
   --color-species-dog-bg: #fef3c7;
   --color-species-cat: #86198f;
@@ -33,7 +30,6 @@
   --color-species-fish: #1d4ed8;
   --color-species-fish-bg: #eff6ff;
 
-  /* Radius — softer than a typical SaaS scale, deliberately */
   --radius-sm: 8px;
   --radius-md: 10px;
   --radius-lg: 16px;
