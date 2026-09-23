@@ -1,5 +1,6 @@
 import { Outlet, Link, useLocation } from "react-router";
-import { PawIcon, CartIcon } from "../components/icons";
+import { PawPrint, ShoppingCart } from "lucide-react";
+import { Show, UserButton } from "@clerk/react";
 import { SearchInput } from "../components/ui";
 
 export default function Root() {
@@ -13,7 +14,7 @@ export default function Root() {
           className="flex items-center gap-2 flex-shrink-0 no-underline"
         >
           <span className="text-[var(--color-primary)]">
-            <PawIcon size={26} />
+            <PawPrint size={26} />
           </span>
           <span className="text-[17px] font-semibold text-[var(--color-text-primary)] tracking-tight">
             PetMandu
@@ -38,15 +39,31 @@ export default function Root() {
           </Link>
         </nav>
 
-        <div className="flex items-center gap-1.5 flex-shrink-0">
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {/* Cart count is hardcoded until Phase 9 wires real cart state */}
           <button className="relative w-10 h-10 rounded-[var(--radius-md)] flex items-center justify-center hover:bg-neutral-100 text-[var(--color-text-secondary)]">
-            <CartIcon size={20} />
+            <ShoppingCart size={20} />
           </button>
-          <Link to="/account" className="no-underline">
-            <div className="w-9 h-9 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-xs font-bold">
-              ?
+
+          <Show when="signed-in">
+            <UserButton appearance={{ elements: { avatarBox: "w-9 h-9" } }} />
+          </Show>
+          <Show when="signed-out">
+            <div className="flex items-center gap-1.5">
+              <Link
+                to="/sign-in"
+                className="hidden sm:inline text-sm font-medium text-[var(--color-text-secondary)] no-underline px-3 py-2 hover:text-[var(--color-text-primary)]"
+              >
+                Sign in
+              </Link>
+              <Link
+                to="/sign-up"
+                className="text-sm font-semibold text-white bg-[var(--color-primary)] no-underline px-4 py-2 rounded-[var(--radius-md)] hover:bg-[var(--color-primary-dark)]"
+              >
+                Sign up
+              </Link>
             </div>
-          </Link>
+          </Show>
         </div>
       </header>
 
