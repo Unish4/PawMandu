@@ -7,7 +7,8 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
-    "seed:categories": "tsx src/scripts/seedCategories.ts"
+    "seed:categories": "tsx src/scripts/seedCategories.ts",
+    "seed:products": "tsx src/scripts/seedProducts.ts"
   },
   "keywords": [],
   "author": "",

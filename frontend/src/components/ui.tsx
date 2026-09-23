@@ -1,6 +1,16 @@
 import { Search } from "lucide-react";
 
-export function SearchInput({ placeholder }: { placeholder: string }) {
+interface SearchInputProps {
+  placeholder: string;
+  value?: string;
+  onChange?: (value: string) => void;
+}
+
+export function SearchInput({
+  placeholder,
+  value,
+  onChange,
+}: SearchInputProps) {
   return (
     <div className="relative">
       <Search
@@ -10,6 +20,8 @@ export function SearchInput({ placeholder }: { placeholder: string }) {
       <input
         type="text"
         placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange?.(e.target.value)}
         className="w-full h-10 pl-9 pr-3 rounded-[var(--radius-md)] border border-[var(--color-border)]
           text-sm text-[var(--color-text-primary)] placeholder:text-[var(--color-text-muted)]
           focus:outline-none focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary-light)]"

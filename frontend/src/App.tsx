@@ -7,6 +7,8 @@ import SignInPage from "./pages/auth/SignInPage";
 import SignUpPage from "./pages/auth/SignUpPage";
 import AccountPage from "./pages/AccountPage";
 import ProtectedRoute from "./pages/auth/ProtectedRoute";
+import ShopPage from "./pages/ShopPage";
+import ProductPage from "./pages/ProductPage";
 
 export default function App() {
   return (
@@ -22,6 +24,9 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Root />}>
           <Route index element={<HomePage />} />
+
+  <Route path="shop" element={<ShopPage />} />
+  <Route path="product/:slug" element={<ProductPage />} />
           <Route element={<ProtectedRoute />}>
             <Route path="account" element={<AccountPage />} />
           </Route>

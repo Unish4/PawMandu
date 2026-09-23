@@ -39,4 +39,5 @@ export const listProductsValidator = [
   query("maxPrice").optional().isFloat({ min: 0 }),
   query("page").optional().isInt({ min: 1 }),
   query("limit").optional().isInt({ min: 1, max: 50 }),
+  query("search").optional().trim().isLength({ max: 100 }),
 ];
