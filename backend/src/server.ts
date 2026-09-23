@@ -11,6 +11,8 @@ import { notFoundHandler, errorHandler } from "./middleware/errorHandler";
 import addressRouter from "./routes/address.routes";
 import productRouter from "./routes/product.routes";
 import categoryRouter from "./routes/category.routes";
+import cartRouter from "./routes/cart.routes";
+
 
 const app = express();
 
@@ -55,6 +57,8 @@ app.use("/api/users", userRouter);
 app.use("/api/addresses", addressRouter);
 app.use("/api/products", productRouter);
 app.use("/api/categories", categoryRouter);
+app.use("/api/cart", cartRouter);
+
 
 app.use(notFoundHandler);
 app.use(errorHandler);
