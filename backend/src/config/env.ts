@@ -2,7 +2,6 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const requiredEnvVars: string[] = [
-  "PORT",
   "MONGODB_URI",
   "NODE_ENV",
   "CLOUDINARY_CLOUD_NAME",
@@ -21,7 +20,7 @@ requiredEnvVars.forEach((varName) => {
 });
 
 export const ENV = {
-  PORT: process.env.PORT as string,
+  PORT: process.env.PORT || "3000",
   MONGODB_URI: process.env.MONGODB_URI as string,
   NODE_ENV: process.env.NODE_ENV as string,
   CLOUDINARY: {
