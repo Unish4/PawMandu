@@ -9,7 +9,8 @@ import webhookRouter from "./routes/webhook.routes";
 import userRouter from "./routes/user.routes";
 import { notFoundHandler, errorHandler } from "./middleware/errorHandler";
 import addressRouter from "./routes/address.routes";
-
+import productRouter from "./routes/product.routes";
+import categoryRouter from "./routes/category.routes";
 
 const app = express();
 
@@ -52,6 +53,8 @@ app.get("/api/health", (_req: Request, res: Response) => {
 
 app.use("/api/users", userRouter);
 app.use("/api/addresses", addressRouter);
+app.use("/api/products", productRouter);
+app.use("/api/categories", categoryRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
