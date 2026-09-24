@@ -7,6 +7,7 @@ import { Address } from "../models/Address";
 import { ApiError } from "../utils/ApiError";
 import { calculateDeliveryFee } from "../utils/calculateDeliveryFee";
 import { generateOrderNumber } from "../utils/generateOrderNumber";
+import { cancelOrderAndRestoreStock } from "../services/order.service";
 
 export const createOrder = async (
   req: Request,
@@ -168,6 +169,32 @@ export const listMyOrders = async (
         totalPages: Math.ceil(total / limitNum),
       },
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const cancelMyOrder = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const order = await Order.findOne({
+      _id: req.params.id,
+      userId: req.appUser!._id,
+    });
+    if (!order) throw new ApiError(404, "Order not found");
+
+    if (order.orderStatus !== "placed") {
+      throw new ApiError(
+        400,
+        `This order is already "${order.orderStatus}" and can't be cancelled here — please contact us on WhatsApp`,
+      );
+    }
+
+    const cancelled = await cancelOrderAndRestoreStock(order, ["placed"]);
+    res.status(200).json({ success: true, order: cancelled });
   } catch (error) {
     next(error);
   }

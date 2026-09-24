@@ -4,12 +4,19 @@ import { OrderStatusBadge } from "../components/order/OrderStatusBadge";
 import { PaymentStatusBadge } from "../components/order/PaymentStatusBadge";
 import { OrderStatusStepper } from "../components/order/OrderStatusStepper";
 import qrCode from "../assets/QR.jpeg";
+import { useState } from "react";
+import { useCancelOrder } from "../hooks/useCancelOrder";
+import { ConfirmDialog } from "../components/ConfirmDialog";
+import toast from "react-hot-toast";
 
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER;
 
 export default function OrderDetailPage() {
   const { id } = useParams();
   const { data: order, isLoading } = useOrder(id);
+
+  const cancelOrder = useCancelOrder();
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   if (isLoading)
     return (
@@ -24,10 +31,19 @@ export default function OrderDetailPage() {
       </div>
     );
 
+  const handleCancel = () => {
+    cancelOrder.mutate(order._id, {
+      onSuccess: () => toast.success("Order cancelled"),
+      onError: (err) => toast.error(err.message),
+    });
+    setConfirmOpen(false);
+  };
+
+  const whatsappNumber = WHATSAPP_NUMBER || "9779823532028";
   const whatsappMessage = encodeURIComponent(
     `Hi, I've paid for order ${order.orderNumber} (Rs ${order.total}). Please confirm.`,
   );
-  const whatsappLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMessage}`;
+  const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
   const showPaymentPanel =
     order.paymentStatus === "pending" && order.orderStatus !== "cancelled";
 
@@ -143,6 +159,26 @@ export default function OrderDetailPage() {
           Continue shopping
         </Link>
       </div>
+
+      {order.orderStatus === "placed" && (
+        <div className="text-center mt-4">
+          <button
+            onClick={() => setConfirmOpen(true)}
+            className="text-sm font-medium text-red-600 hover:text-red-700"
+          >
+            Cancel this order
+          </button>
+        </div>
+      )}
+
+      <ConfirmDialog
+        open={confirmOpen}
+        title="Cancel this order?"
+        description="This can't be undone. Your items will be released back into stock."
+        confirmLabel="Cancel order"
+        onConfirm={handleCancel}
+        onCancel={() => setConfirmOpen(false)}
+      />
     </div>
   );
 }
