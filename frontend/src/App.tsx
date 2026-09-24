@@ -10,7 +10,13 @@ import ProtectedRoute from "./pages/auth/ProtectedRoute";
 import ShopPage from "./pages/ShopPage";
 import ProductPage from "./pages/ProductPage";
 import CheckoutPage from "./pages/CheckoutPage";
-import OrderDetailPage from "./pages/OrderDetailPage"
+import OrderDetailPage from "./pages/OrderDetailPage";
+import AdminLayout from "./layouts/AdminLayout";
+import AdminRoute from "./pages/auth/AdminRoute";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import AdminOrdersPage from "./pages/admin/AdminOrdersPage";
+import AdminProductsPage from "./pages/admin/AdminProductsPage";
+import AdminInventoryPage from "./pages/admin/AdminInventoryPage";
 
 export default function App() {
   return (
@@ -24,6 +30,16 @@ export default function App() {
         }}
       />
       <Routes>
+
+        <Route element={<AdminRoute />}>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboardPage />} />
+            <Route path="orders" element={<AdminOrdersPage />} />
+            <Route path="products" element={<AdminProductsPage />} />
+            <Route path="inventory" element={<AdminInventoryPage />} />
+          </Route>
+        </Route>
+
         <Route path="/" element={<Root />}>
           <Route index element={<HomePage />} />
 

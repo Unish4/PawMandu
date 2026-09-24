@@ -14,7 +14,8 @@ import categoryRouter from "./routes/category.routes";
 import cartRouter from "./routes/cart.routes";
 import orderRouter from "./routes/order.routes";
 import adminOrderRouter from "./routes/adminOrder.routes";
-
+import adminProductRouter from "./routes/adminProduct.routes";
+import adminDashboardRouter from "./routes/adminDashboard.routes";
 
 const app = express();
 
@@ -62,6 +63,8 @@ app.use("/api/categories", categoryRouter);
 app.use("/api/cart", cartRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/admin/orders", adminOrderRouter);
+app.use("/api/admin/products", adminProductRouter);
+app.use("/api/admin/dashboard", adminDashboardRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

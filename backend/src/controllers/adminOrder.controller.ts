@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { Order } from "../models/Order";
 import { ApiError } from "../utils/ApiError";
 import { isValidTransition } from "../constants/orderTransitions";
+import { cancelOrderAndRestoreStock } from "../services/order.service";
 
 export const listAdminOrders = async (
   req: Request,
@@ -96,10 +97,21 @@ export const updateOrderStatus = async (
       );
     }
 
-    order.orderStatus = orderStatus;
-    await order.save();
+    let updatedOrder;
+    if (orderStatus === "cancelled") {
+      updatedOrder = await cancelOrderAndRestoreStock(order);
+    } else {
+      updatedOrder = await Order.findOneAndUpdate(
+        { _id: order._id, orderStatus: order.orderStatus },
+        { $set: { orderStatus } },
+        { new: true },
+      );
+      if (!updatedOrder) {
+        throw new ApiError(409, "Order status changed before this update");
+      }
+    }
 
-    res.status(200).json({ success: true, order });
+    res.status(200).json({ success: true, order: updatedOrder });
   } catch (error) {
     next(error);
   }
