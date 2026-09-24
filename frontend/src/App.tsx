@@ -10,7 +10,7 @@ import ProtectedRoute from "./pages/auth/ProtectedRoute";
 import ShopPage from "./pages/ShopPage";
 import ProductPage from "./pages/ProductPage";
 import CheckoutPage from "./pages/CheckoutPage";
-import OrderConfirmationPage from "./pages/OrderConfirmationPage";
+import OrderDetailPage from "./pages/OrderDetailPage"
 
 export default function App() {
   return (
@@ -33,7 +33,7 @@ export default function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="account" element={<AccountPage />} />
             <Route path="checkout" element={<CheckoutPage />} />
-            <Route path="orders/:id" element={<OrderConfirmationPage />} />{" "}
+            <Route path="orders/:id" element={<OrderDetailPage />} />{" "}
           </Route>
         </Route>
 
