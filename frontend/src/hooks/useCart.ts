@@ -2,6 +2,11 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@clerk/react";
 import { api } from "../services/api";
 
+export interface ProductImage {
+  url: string;
+  publicId: string;
+}
+
 export interface CartItemResolved {
   productId: string;
   quantity: number;
@@ -10,7 +15,7 @@ export interface CartItemResolved {
     price: number;
     stock: number;
     slug: string;
-    images: string[];
+    images: { url: string; publicId: string }[];
   } | null;
   issue: "unavailable" | "insufficient_stock" | null;
 }
