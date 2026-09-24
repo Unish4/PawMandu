@@ -9,6 +9,8 @@ import AccountPage from "./pages/AccountPage";
 import ProtectedRoute from "./pages/auth/ProtectedRoute";
 import ShopPage from "./pages/ShopPage";
 import ProductPage from "./pages/ProductPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import OrderConfirmationPage from "./pages/OrderConfirmationPage";
 
 export default function App() {
   return (
@@ -25,12 +27,16 @@ export default function App() {
         <Route path="/" element={<Root />}>
           <Route index element={<HomePage />} />
 
-  <Route path="shop" element={<ShopPage />} />
-  <Route path="product/:slug" element={<ProductPage />} />
+          <Route path="shop" element={<ShopPage />} />
+          <Route path="product/:slug" element={<ProductPage />} />
+
           <Route element={<ProtectedRoute />}>
             <Route path="account" element={<AccountPage />} />
+            <Route path="checkout" element={<CheckoutPage />} />
+            <Route path="orders/:id" element={<OrderConfirmationPage />} />{" "}
           </Route>
         </Route>
+
         <Route path="/sign-in/*" element={<SignInPage />} />
         <Route path="/sign-up/*" element={<SignUpPage />} />
         <Route path="*" element={<NotFoundPage />} />

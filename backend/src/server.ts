@@ -12,6 +12,8 @@ import addressRouter from "./routes/address.routes";
 import productRouter from "./routes/product.routes";
 import categoryRouter from "./routes/category.routes";
 import cartRouter from "./routes/cart.routes";
+import orderRouter from "./routes/order.routes";
+import adminOrderRouter from "./routes/adminOrder.routes";
 
 
 const app = express();
@@ -58,7 +60,8 @@ app.use("/api/addresses", addressRouter);
 app.use("/api/products", productRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/cart", cartRouter);
-
+app.use("/api/orders", orderRouter);
+app.use("/api/admin/orders", adminOrderRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

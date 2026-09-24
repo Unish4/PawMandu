@@ -5,12 +5,15 @@ import { useAuth } from "@clerk/react";
 import { useUIStore } from "../../store/uiStore";
 import { useCart } from "../../hooks/useCart";
 import { CartItem } from "./CartItem";
+import { useNavigate } from "react-router";
 
 export function CartDrawer() {
   const isOpen = useUIStore((s) => s.isCartOpen);
   const closeCart = useUIStore((s) => s.closeCart);
   const { isSignedIn } = useAuth();
   const { data: cart, isLoading } = useCart();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!isOpen) return;
@@ -107,6 +110,10 @@ export function CartDrawer() {
             </div>
             <button
               disabled={hasUnresolvedIssues}
+              onClick={() => {
+                closeCart();
+                navigate("/checkout");
+              }}
               className="w-full h-11 mt-2 rounded-[var(--radius-md)] bg-[var(--color-primary)] text-white text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed"
             >
               Proceed to checkout
