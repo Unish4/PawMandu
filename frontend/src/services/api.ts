@@ -17,6 +17,10 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     const message = error.response?.data?.message ?? "Something went wrong";
-    return Promise.reject(new Error(message));
+    const apiError = Object.assign(new Error(message), {
+      status: error.response?.status,
+      response: error.response,
+    });
+    return Promise.reject(apiError);
   },
 );

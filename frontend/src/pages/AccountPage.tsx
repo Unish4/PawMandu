@@ -2,11 +2,13 @@ import { useState } from "react";
 import { ProfileTab } from "../components/account/ProfileTab";
 import { AddressesTab } from "../components/account/AddressesTab";
 
+import { OrderHistoryTab } from "../components/account/OrderHistoryTab";
+
 const TABS = [
   { key: "profile", label: "Profile" },
+  { key: "orders", label: "Order History" },
   { key: "addresses", label: "Saved Addresses" },
 ] as const;
-// "Order History" joins this list in Phase 12 — no orders exist to show yet.
 
 type TabKey = (typeof TABS)[number]["key"];
 
@@ -30,6 +32,7 @@ export default function AccountPage() {
         ))}
       </div>
       {activeTab === "profile" && <ProfileTab />}
+      {activeTab === "orders" && <OrderHistoryTab />}
       {activeTab === "addresses" && <AddressesTab />}
     </div>
   );
