@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { Cart, type ICartItem } from "../models/Cart";
 import { Product } from "../models/Product";
 import { ApiError } from "../utils/ApiError";
+import { calculateDeliveryFee } from "../utils/calculateDeliveryFee";
 
 async function getOrCreateCart(userId: string) {
   let cart = await Cart.findOne({ userId });
@@ -52,7 +53,7 @@ async function buildCartResponse(items: ICartItem[]) {
     return sum + item.product.price * usableQty;
   }, 0);
 
-  const deliveryFee = subtotal > 0 ? 100 : 0;
+  const deliveryFee = calculateDeliveryFee(subtotal);
   return {
     items: resolvedItems,
     subtotal,
