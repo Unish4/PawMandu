@@ -3,8 +3,14 @@ import { PawPrint, ShoppingCart } from "lucide-react";
 import { Show, UserButton } from "@clerk/react";
 import { SearchInput } from "../components/ui";
 import { User } from "lucide-react";
+import { useUIStore } from "../store/uiStore";
+import { useCart } from "../hooks/useCart";
+import { CartDrawer } from "../components/cart/CartDrawer";
 
 export default function Root() {
+  const openCart = useUIStore((s) => s.openCart);
+  const { data: cart } = useCart();
+  const cartCount = cart?.items.reduce((sum, i) => sum + i.quantity, 0) ?? 0;
   const location = useLocation();
 
   return (
@@ -41,9 +47,16 @@ export default function Root() {
         </nav>
 
         <div className="flex items-center gap-2 flex-shrink-0">
-          {/* Cart count is hardcoded until Phase 9 wires real cart state */}
-          <button className="relative w-10 h-10 rounded-[var(--radius-md)] flex items-center justify-center hover:bg-neutral-100 text-[var(--color-text-secondary)]">
+          <button
+            onClick={openCart}
+            className="relative w-10 h-10 rounded-[var(--radius-md)] flex items-center justify-center hover:bg-neutral-100 text-[var(--color-text-secondary)]"
+          >
             <ShoppingCart size={20} />
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-[var(--color-accent)] text-white text-[10px] font-bold flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
           </button>
 
           <Show when="signed-in">
@@ -77,6 +90,7 @@ export default function Root() {
       </header>
 
       <Outlet />
+      <CartDrawer />
     </div>
   );
 }
