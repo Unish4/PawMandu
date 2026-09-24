@@ -10,6 +10,11 @@ import {
 import { useCategories } from "../../hooks/useCategories";
 import { ConfirmDialog } from "../../components/ConfirmDialog";
 import type { Product } from "../../hooks/useProducts";
+import {
+  useDeleteImage,
+  type UploadedImage,
+} from "../../hooks/useUploadImage";
+import { ImageUploadField } from "../../components/admin/ImageUploadField";
 
 const SPECIES_OPTIONS = ["dog", "cat", "fish"] as const;
 
@@ -36,7 +41,13 @@ function ProductFormModal({
   const [price, setPrice] = useState(existing?.price?.toString() ?? "");
   const [stock, setStock] = useState(existing?.stock?.toString() ?? "");
   const [description, setDescription] = useState(existing?.description ?? "");
-  const [imageUrl, setImageUrl] = useState(existing?.images[0] ?? "");
+
+  const [image, setImage] = useState<UploadedImage | null>(
+    existing?.images[0] ?? null,
+  );
+  const originalPublicId = existing?.images[0]?.publicId ?? null;
+  const deleteImage = useDeleteImage();
+
   const [isActive, setIsActive] = useState(existing?.isActive ?? true);
 
   const { data: categories } = useCategories(species);
@@ -45,6 +56,13 @@ function ProductFormModal({
   const isPending = createProduct.isPending || updateProduct.isPending;
 
   if (!open) return null;
+
+  const handleCancel = () => {
+    if (image && image.publicId !== originalPublicId) {
+      deleteImage.mutate(image.publicId);
+    }
+    onClose();
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,7 +73,7 @@ function ProductFormModal({
       price: Number(price),
       stock: Number(stock),
       description: description || undefined,
-      images: imageUrl ? [imageUrl] : [],
+      images: image ? [image] : [],
       isActive,
     };
     const mutation = existing
@@ -167,18 +185,13 @@ function ProductFormModal({
           </div>
           <div>
             <label className="block text-xs font-medium text-[var(--color-text-secondary)] mb-1">
-              Image URL
+              Product image
             </label>
-            <input
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-              placeholder="https://..."
-              className="w-full h-10 px-3 rounded-[var(--radius-md)] border border-[var(--color-border)] text-sm"
+            <ImageUploadField
+              value={image}
+              onChange={setImage}
+              originalPublicId={originalPublicId}
             />
-            <p className="text-xs text-[var(--color-text-muted)] mt-1">
-              Real upload arrives in Phase 14 — paste a hosted image URL for
-              now.
-            </p>
           </div>
           <label className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
             <input
@@ -192,7 +205,7 @@ function ProductFormModal({
           <div className="flex justify-end gap-2 pt-2">
             <button
               type="button"
-              onClick={onClose}
+              onClick={handleCancel}
               className="px-4 py-2 text-sm font-medium rounded-[var(--radius-md)] border border-[var(--color-border)] text-[var(--color-text-secondary)]"
             >
               Cancel

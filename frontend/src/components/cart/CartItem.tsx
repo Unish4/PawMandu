@@ -1,4 +1,5 @@
 import { Trash2 } from "lucide-react";
+import { ProductImage } from "../product/ProductImage";
 import {
   useUpdateCartItem,
   useRemoveCartItem,
@@ -22,13 +23,15 @@ export function CartItem({ item }: { item: CartItemResolved }) {
   return (
     <div className="flex gap-3 py-4 border-b border-[var(--color-border)] last:border-0">
       <div className="w-16 h-16 rounded-[var(--radius-md)] bg-neutral-100 flex-shrink-0 overflow-hidden">
-        {item.product?.images[0] && (
-          <img
-            src={item.product.images[0]}
-            alt={item.product.name}
-            className="w-full h-full object-cover"
-          />
-        )}
+        <ProductImage
+          src={
+            typeof item.product?.images[0] === "string"
+              ? item.product.images[0]
+              : (item.product?.images[0] as { url: string })?.url
+          }
+          alt={item.product?.name ?? "Product"}
+          className="w-full h-full object-cover"
+        />
       </div>
 
       <div className="flex-1 min-w-0">

@@ -1,6 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "../services/api";
 
+export interface ProductImage {
+  url: string;
+  publicId: string;
+}
 export interface Product {
   _id: string;
   name: string;
@@ -10,7 +14,7 @@ export interface Product {
   price: number;
   stock: number;
   description?: string;
-  images: string[];
+  images: ProductImage[];
   isActive: boolean;
 }
 
@@ -35,6 +39,7 @@ interface ProductsResponse {
     totalPages: number;
   };
 }
+
 
 export function useProducts(
   filters: ProductFilters,

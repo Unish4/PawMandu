@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router";
 import { useProduct } from "../hooks/useProduct";
 import { useProducts } from "../hooks/useProducts";
 import { ProductCard } from "../components/product/ProductCard";
+import { ProductImage } from "../components/product/ProductImage";
 import { useAuth } from "@clerk/react";
 import toast from "react-hot-toast";
 import { useAddToCart, useCartQuantity } from "../hooks/useCart";
@@ -113,17 +114,15 @@ export default function ProductPage() {
     <div className="max-w-6xl mx-auto px-6 py-10">
       <div className="grid md:grid-cols-2 gap-10 mb-16">
         <div className="aspect-square rounded-[var(--radius-lg)] bg-neutral-100 overflow-hidden">
-          {product.images[0] ? (
-            <img
-              src={product.images[0]}
-              alt={product.name}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-[var(--color-text-muted)] text-sm">
-              No image available
-            </div>
-          )}
+          <ProductImage
+            src={
+              typeof product.images[0] === "string"
+                ? product.images[0]
+                : product.images[0]?.url
+            }
+            alt={product.name}
+            className="w-full h-full object-cover"
+          />
         </div>
 
         <div>

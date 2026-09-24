@@ -2,6 +2,11 @@ import { Schema, model, Document, Types } from "mongoose";
 import { slugify } from "../utils/slugify";
 import type { Species } from "./Category";
 
+interface IProductImage {
+  url: string;
+  publicId: string;
+}
+
 export interface IProduct extends Document {
   name: string;
   slug: string;
@@ -10,11 +15,19 @@ export interface IProduct extends Document {
   price: number;
   stock: number;
   description?: string;
-  images: string[];
+  images: IProductImage[];
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
+
+const productImageSchema = new Schema<IProductImage>(
+  {
+    url: { type: String, required: true },
+    publicId: { type: String, required: true },
+  },
+  { _id: false },
+);
 
 const productSchema = new Schema<IProduct>(
   {
@@ -52,7 +65,7 @@ const productSchema = new Schema<IProduct>(
       default: 0,
     },
     description: { type: String, trim: true, maxlength: 2000 },
-    images: { type: [String], default: [] },
+    images: { type: [productImageSchema], default: [] },
     isActive: { type: Boolean, default: true },
   },
   { timestamps: true },

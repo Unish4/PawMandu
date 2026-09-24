@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { Product } from "../models/Product";
 import { Category } from "../models/Category";
 import { ApiError } from "../utils/ApiError";
+import { deleteCloudinaryImage } from "../services/cloudinary.service";
 
 export const listProducts = async (
   req: Request,
@@ -144,7 +145,9 @@ export const updateProduct = async (
     const existing = await Product.findById(req.params.id);
     if (!existing) throw new ApiError(404, "Product not found");
 
-    const { species, categoryId } = req.body;
+    const previousImages = [...existing.images];
+
+    const { species, categoryId, images: newImages } = req.body;
     if (species || categoryId) {
       await assertCategoryMatchesSpecies(
         categoryId ?? existing.categoryId.toString(),
@@ -155,6 +158,20 @@ export const updateProduct = async (
     Object.assign(existing, req.body);
     await existing.save();
 
+    if (newImages && Array.isArray(newImages)) {
+      const newPublicIds = new Set(
+        newImages.map((img: string | { publicId: string }) =>
+          typeof img === "string" ? img : img.publicId,
+        ),
+      );
+      const removedImages = previousImages.filter(
+        (img) => !newPublicIds.has(img.publicId),
+      );
+      for (const img of removedImages) {
+        void deleteCloudinaryImage(img.publicId).catch(() => {});
+      }
+    }
+    
     res.status(200).json({ success: true, product: existing });
   } catch (error) {
     next(error);
@@ -169,6 +186,11 @@ export const deleteProduct = async (
   try {
     const deleted = await Product.findByIdAndDelete(req.params.id);
     if (!deleted) throw new ApiError(404, "Product not found");
+
+    for (const img of deleted.images) {
+      void deleteCloudinaryImage(img.publicId).catch(() => {});
+    }
+
     res.status(200).json({ success: true, message: "Product deleted" });
   } catch (error) {
     next(error);

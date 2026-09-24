@@ -5,6 +5,8 @@ import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import { useAddToCart, useCartQuantity } from "../../hooks/useCart";
 
+import { ProductImage } from "./ProductImage";
+
 const SPECIES_STYLE: Record<
   string,
   { color: string; bg: string; label: string }
@@ -62,17 +64,15 @@ export function ProductCard({ product }: { product: Product }) {
     <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden hover:border-[var(--color-border-strong)] hover:shadow-[0_4px_16px_rgba(28,25,23,0.06)] transition-all">
       <Link to={`/product/${product.slug}`} className="block no-underline">
         <div className="relative aspect-square bg-neutral-100">
-          {product.images[0] ? (
-            <img
-              src={product.images[0]}
-              alt={product.name}
-              className="w-full h-full object-cover"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center text-[var(--color-text-muted)] text-xs">
-              No image
-            </div>
-          )}
+          <ProductImage
+            src={
+              typeof product.images[0] === "string"
+                ? product.images[0]
+                : product.images[0]?.url
+            }
+            alt={product.name}
+            className="w-full h-full object-cover"
+          />
           <span
             className="absolute top-2 left-2 text-xs font-medium px-2 py-0.5 rounded-full"
             style={{ color: species.color, backgroundColor: species.bg }}

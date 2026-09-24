@@ -16,6 +16,7 @@ import orderRouter from "./routes/order.routes";
 import adminOrderRouter from "./routes/adminOrder.routes";
 import adminProductRouter from "./routes/adminProduct.routes";
 import adminDashboardRouter from "./routes/adminDashboard.routes";
+import uploadRouter from "./routes/upload.routes";
 
 const app = express();
 
@@ -65,6 +66,7 @@ app.use("/api/orders", orderRouter);
 app.use("/api/admin/orders", adminOrderRouter);
 app.use("/api/admin/products", adminProductRouter);
 app.use("/api/admin/dashboard", adminDashboardRouter);
+app.use("/api/admin/uploads", uploadRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

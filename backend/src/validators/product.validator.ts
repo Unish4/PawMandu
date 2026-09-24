@@ -13,11 +13,10 @@ export const createProductValidator = [
   body("price").isFloat({ min: 0 }).withMessage("Price must be 0 or greater"),
   body("stock").isInt({ min: 0 }).withMessage("Stock must be 0 or greater"),
   body("description").optional().trim().isLength({ max: 2000 }),
-  body("images").optional().isArray(),
-  body("images.*")
-    .optional()
-    .isURL()
-    .withMessage("Each image must be a valid URL"),
+  body("images").optional().isArray().withMessage("Images must be an array"),
+  body("images.*").isObject().withMessage("Each image must be an object"),
+  body("images.*.url").isURL().withMessage("Image URL is invalid"),
+  body("images.*.publicId").isString().notEmpty(),
   body("isActive").optional().isBoolean(),
 ];
 
@@ -28,8 +27,10 @@ export const updateProductValidator = [
   body("price").optional().isFloat({ min: 0 }),
   body("stock").optional().isInt({ min: 0 }),
   body("description").optional().trim().isLength({ max: 2000 }),
-  body("images").optional().isArray(),
-  body("images.*").optional().isURL(),
+  body("images").optional().isArray().withMessage("Images must be an array"),
+  body("images.*").isObject().withMessage("Each image must be an object"),
+  body("images.*.url").isURL().withMessage("Image URL is invalid"),
+  body("images.*.publicId").isString().notEmpty(),
   body("isActive").optional().isBoolean(),
 ];
 

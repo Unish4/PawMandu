@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "../services/api";
-import type { Product } from "./useProducts";
+import type { Product, ProductImage } from "./useProducts";
 
 export function useAdminProducts() {
   return useQuery<Product[]>({
@@ -16,7 +16,7 @@ interface ProductInput {
   price: number;
   stock: number;
   description?: string;
-  images?: string[];
+  images?: (string | ProductImage)[];
   isActive?: boolean;
 }
 
