@@ -14,7 +14,7 @@ export const uploadProductImage = async (
     const result = await new Promise<{ secure_url: string; public_id: string }>(
       (resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
-          { folder: "petmandu/products" },
+          { folder: "pawmandu/products" },
           (error, result) => {
             if (error || !result)
               return reject(error ?? new ApiError(502, "Image upload failed"));

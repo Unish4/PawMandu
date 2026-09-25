@@ -8,9 +8,11 @@ import {
 } from "../../hooks/useAddresses";
 import { AddressFormModal } from "./AddressFormModal";
 import { ConfirmDialog } from "../ConfirmDialog";
+import { ErrorState } from "../ErrorState";
+import LoadingSpinner from "../LoadingSpinner";
 
 export function AddressesTab() {
-  const { data: addresses, isLoading } = useAddresses();
+  const { data: addresses, isLoading, isError, refetch } = useAddresses();
   const deleteAddress = useDeleteAddress();
 
   const [formOpen, setFormOpen] = useState(false);
@@ -28,10 +30,11 @@ export function AddressesTab() {
 
   if (isLoading)
     return (
-      <p className="text-sm text-[var(--color-text-secondary)]">
-        Loading addresses...
-      </p>
+      <div className="py-8 flex justify-center">
+        <LoadingSpinner />
+      </div>
     );
+  if (isError) return <ErrorState onRetry={() => refetch()} />;
 
   return (
     <div>

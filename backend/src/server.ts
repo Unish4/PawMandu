@@ -17,6 +17,7 @@ import adminOrderRouter from "./routes/adminOrder.routes";
 import adminProductRouter from "./routes/adminProduct.routes";
 import adminDashboardRouter from "./routes/adminDashboard.routes";
 import uploadRouter from "./routes/upload.routes";
+import { transporter } from "./config/email";
 
 const app = express();
 
@@ -39,7 +40,7 @@ app.use(clerkMiddleware());
 
 app.get("/", (_req: Request, res: Response) => {
   res.json({
-    message: "PetMandu API",
+    message: "PawMandu API",
     version: "1.0.0",
     endpoints: {
       users: {
@@ -54,7 +55,7 @@ app.get("/", (_req: Request, res: Response) => {
 });
 
 app.get("/api/health", (_req: Request, res: Response) => {
-  res.status(200).json({ success: true, message: "PetMandu API is running" });
+  res.status(200).json({ success: true, message: "PawMandu API is running" });
 });
 
 app.use("/api/users", userRouter);
@@ -75,10 +76,20 @@ const start = async (): Promise<void> => {
   try {
     await connectDB();
 
+    transporter
+      .verify()
+      .then(() => console.log("Email transporter ready"))
+      .catch((err) =>
+        console.warn(
+          "Email transporter verification failed — order emails will not send:",
+          err.message,
+        ),
+      );
+
     const port = Number(ENV.PORT);
 
     app.listen(port, () => {
-      console.log(`PetMandu API running on http://localhost:${port}`);
+      console.log(`PawMandu API running on http://localhost:${port}`);
       console.log(`Environment: ${ENV.NODE_ENV}`);
     });
   } catch (error) {

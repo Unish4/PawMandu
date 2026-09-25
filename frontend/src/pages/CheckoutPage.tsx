@@ -6,11 +6,18 @@ import { useCart } from "../hooks/useCart";
 import { useCheckout } from "../hooks/useCheckout";
 import { AddressFormModal } from "../components/account/AddressFormModal";
 import axios from "axios";
+import { ErrorState } from "../components/ErrorState";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
   const { data: addresses, isLoading: addressesLoading } = useAddresses();
-  const { data: cart, isLoading: cartLoading } = useCart();
+  const {
+    data: cart,
+    isLoading: cartLoading,
+    isError: cartError,
+    refetch: refetchCart,
+  } = useCart();
   const checkout = useCheckout();
 
   const [selectedAddressId, setSelectedAddressId] = useState("");
@@ -52,8 +59,16 @@ export default function CheckoutPage() {
 
   if (cartLoading || addressesLoading) {
     return (
-      <div className="max-w-4xl mx-auto px-6 py-16 text-center text-[var(--color-text-secondary)]">
-        Loading...
+      <div className="max-w-4xl mx-auto px-6 py-16 flex justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (cartError) {
+    return (
+      <div className="max-w-4xl mx-auto px-6 py-16">
+        <ErrorState onRetry={() => refetchCart()} />
       </div>
     );
   }

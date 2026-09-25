@@ -1,3 +1,5 @@
+import { useEscapeKey } from "../hooks/useEscapeKey";
+
 interface ConfirmDialogProps {
   open: boolean;
   title: string;
@@ -15,6 +17,7 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
+  useEscapeKey(onCancel, open);
   if (!open) return null;
 
   return (

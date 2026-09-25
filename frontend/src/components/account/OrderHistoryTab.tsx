@@ -7,6 +7,8 @@ import type { Order } from "../../hooks/useOrder";
 import { OrderStatusBadge } from "../order/OrderStatusBadge";
 import { PaymentStatusBadge } from "../order/PaymentStatusBadge";
 import { EmptyState } from "../EmptyState";
+import { ErrorState } from "../ErrorState";
+import LoadingSpinner from "../LoadingSpinner";
 
 const FILTERS = [
   { value: "", label: "All" },
@@ -19,7 +21,7 @@ const FILTERS = [
 export function OrderHistoryTab() {
   const [filter, setFilter] = useState("");
   const [page, setPage] = useState(1);
-  const { data, isLoading, isError, error, refetch } = useOrders(
+  const { data, isLoading, isError, refetch } = useOrders(
     filter || undefined,
     page,
   );
@@ -80,7 +82,7 @@ export function OrderHistoryTab() {
 
   return (
     <div>
-      <div className="flex gap-1.5 mb-5">
+      <div className="flex flex-wrap gap-1.5 mb-5">
         {FILTERS.map((f) => (
           <button
             key={f.value}
@@ -88,7 +90,7 @@ export function OrderHistoryTab() {
               setFilter(f.value);
               setPage(1);
             }}
-            className={`text-sm px-3 py-1.5 rounded-[var(--radius-sm)] ${
+            className={`text-sm px-3 py-1.5 rounded-[var(--radius-sm)] transition-colors ${
               filter === f.value
                 ? "bg-[var(--color-primary-light)] text-[var(--color-primary)] font-semibold"
                 : "text-[var(--color-text-secondary)] hover:bg-neutral-100"
@@ -100,30 +102,23 @@ export function OrderHistoryTab() {
       </div>
 
       {isLoading ? (
-        <p className="text-sm text-[var(--color-text-secondary)]">
-          Loading orders...
-        </p>
+        <div className="py-12 flex justify-center">
+          <LoadingSpinner />
+        </div>
       ) : isError ? (
-        <EmptyState
-          title="Could not load orders"
-          description={error.message || "Please try again."}
-          action={
-            <button
-              onClick={() => refetch()}
-              className="text-sm font-semibold text-[var(--color-primary)]"
-            >
-              Retry
-            </button>
-          }
-        />
+        <ErrorState title="Could not load orders" onRetry={() => refetch()} />
       ) : !data || data.orders.length === 0 ? (
         <EmptyState
-          title="No orders yet"
-          description="Your order history will show up here."
+          title="No orders found"
+          description={
+            filter
+              ? `No orders matching status "${filter}".`
+              : "Your order history will show up here."
+          }
           action={
             <Link
               to="/shop"
-              className="text-sm font-semibold text-[var(--color-primary)]"
+              className="text-sm font-semibold text-[var(--color-primary)] hover:underline"
             >
               Start shopping
             </Link>
@@ -135,7 +130,7 @@ export function OrderHistoryTab() {
             {data.orders.map((order) => (
               <div
                 key={order._id}
-                className="rounded-[var(--radius-lg)] border border-[var(--color-border)] p-4"
+                className="rounded-[var(--radius-lg)] border border-[var(--color-border)] p-4 bg-[var(--color-surface)] hover:border-[var(--color-border-strong)] transition-all"
               >
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                   <div className="flex items-center gap-2">
@@ -167,13 +162,14 @@ export function OrderHistoryTab() {
                 <div className="flex gap-2">
                   <Link
                     to={`/orders/${order._id}`}
-                    className="text-sm font-medium px-3 py-1.5 rounded-[var(--radius-sm)] border border-[var(--color-border)] text-[var(--color-text-secondary)]"
+                    className="text-sm font-medium px-3 py-1.5 rounded-[var(--radius-sm)] border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-neutral-100 no-underline transition-colors"
                   >
                     View
                   </Link>
                   <button
                     onClick={() => handleReorder(order)}
-                    className="text-sm font-medium px-3 py-1.5 rounded-[var(--radius-sm)] border border-[var(--color-border)] text-[var(--color-text-secondary)]"
+                    disabled={addToCart.isPending}
+                    className="text-sm font-medium px-3 py-1.5 rounded-[var(--radius-sm)] border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-neutral-100 disabled:opacity-50 transition-colors"
                   >
                     Reorder
                   </button>
@@ -187,7 +183,7 @@ export function OrderHistoryTab() {
               <button
                 onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={page <= 1}
-                className="text-sm font-medium px-3 py-1.5 rounded-[var(--radius-sm)] border border-[var(--color-border)] text-[var(--color-text-secondary)] disabled:opacity-40 disabled:cursor-not-allowed"
+                className="text-sm font-medium px-3 py-1.5 rounded-[var(--radius-sm)] border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-neutral-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 Previous
               </button>
@@ -199,7 +195,7 @@ export function OrderHistoryTab() {
                   setPage((p) => Math.min(data.pagination.totalPages, p + 1))
                 }
                 disabled={page >= data.pagination.totalPages}
-                className="text-sm font-medium px-3 py-1.5 rounded-[var(--radius-sm)] border border-[var(--color-border)] text-[var(--color-text-secondary)] disabled:opacity-40 disabled:cursor-not-allowed"
+                className="text-sm font-medium px-3 py-1.5 rounded-[var(--radius-sm)] border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-neutral-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
               >
                 Next
               </button>
@@ -210,3 +206,4 @@ export function OrderHistoryTab() {
     </div>
   );
 }
+
