@@ -21,7 +21,7 @@ export const uploadProductImage = async (
             resolve(result);
           },
         );
-        stream.end(req.file!.buffer);
+        (stream as any).end(req.file!.buffer);
       },
     );
 
