@@ -11,6 +11,7 @@ import {
   type Address,
 } from "../../hooks/useAddresses";
 import axios from "axios";
+import { useEscapeKey } from "../../hooks/useEscapeKey";
 
 interface AddressFormModalProps {
   open: boolean;
@@ -44,6 +45,13 @@ export function AddressFormModal({
       isDefault: false,
     },
   });
+
+  const handleCancel = () => {
+    reset();
+    onClose();
+  };
+
+  useEscapeKey(handleCancel, open);
 
   if (!open) return null;
 
@@ -156,10 +164,7 @@ export function AddressFormModal({
           <div className="flex justify-end gap-2 pt-2">
             <button
               type="button"
-              onClick={() => {
-                reset();
-                onClose();
-              }}
+              onClick={handleCancel}
               className="px-4 py-2 text-sm font-medium rounded-[var(--radius-md)] border border-[var(--color-border)] text-[var(--color-text-secondary)]"
             >
               Cancel

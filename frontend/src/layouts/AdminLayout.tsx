@@ -13,7 +13,7 @@ export default function AdminLayout() {
     <div className="min-h-screen flex">
       <aside className="w-16 md:w-60 bg-neutral-900 text-white flex flex-col shrink-0 transition-all">
         <div className="h-16 flex items-center justify-center md:justify-start px-3 md:px-5 font-semibold text-base md:text-lg border-b border-white/10">
-          <span className="hidden md:inline">PetMandu Admin</span>
+          <span className="hidden md:inline">PawMandu Admin</span>
           <span className="md:hidden font-bold text-xs">PM</span>
         </div>
         <nav className="flex-1 py-4 px-2 md:px-3 space-y-1">

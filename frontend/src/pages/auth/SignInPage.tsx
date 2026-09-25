@@ -18,7 +18,7 @@ export default function SignInPage() {
               <PawPrint size={24} />
             </span>
             <span className="text-[17px] font-semibold text-[var(--color-text-primary)]">
-              PetMandu
+              PawMandu
             </span>
           </Link>
           <Link
@@ -34,7 +34,7 @@ export default function SignInPage() {
         <div className="w-full max-w-xl">
           <h1 className="mb-4 text-center text-4xl font-bold tracking-tight text-[var(--color-text-primary)] sm:text-left">
             Welcome back to{" "}
-            <span className="text-[var(--color-primary)]">PetMandu.</span>
+            <span className="text-[var(--color-primary)]">PawMandu.</span>
           </h1>
           <p className="mb-8 text-center text-[var(--color-text-secondary)] sm:text-left">
             Sign in to track your orders and manage your saved addresses.
@@ -46,7 +46,7 @@ export default function SignInPage() {
                 <Truck className="text-[var(--color-primary)]" size={20} />
               </div>
               <h3 className="font-semibold text-[var(--color-text-primary)]">
-                Flat Rs 100 delivery
+                Fast delivery inside Valley
               </h3>
               <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
                 Anywhere across Kathmandu Valley.

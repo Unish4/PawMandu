@@ -8,6 +8,7 @@ import { ApiError } from "../utils/ApiError";
 import { calculateDeliveryFee } from "../utils/calculateDeliveryFee";
 import { generateOrderNumber } from "../utils/generateOrderNumber";
 import { cancelOrderAndRestoreStock } from "../services/order.service";
+import { sendOrderConfirmationEmail } from "../services/email.service";
 
 export const createOrder = async (
   req: Request,
@@ -95,6 +96,8 @@ export const createOrder = async (
       await Cart.findOneAndUpdate({ userId }, { items: [] }, { session });
 
       await session.commitTransaction();
+      void sendOrderConfirmationEmail(created[0], req.appUser!.email);
+      
       res.status(201).json({ success: true, order: created[0] });
     } catch (error) {
       await session.abortTransaction();

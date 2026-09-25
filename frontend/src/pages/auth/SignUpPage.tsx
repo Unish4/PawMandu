@@ -12,7 +12,7 @@ export default function SignUpPage() {
               <PawPrint size={24} />
             </span>
             <span className="text-[17px] font-semibold text-[var(--color-text-primary)]">
-              PetMandu
+              PawMandu
             </span>
           </Link>
           <Link
@@ -41,7 +41,7 @@ export default function SignUpPage() {
                 <Truck className="text-[var(--color-primary)]" size={20} />
               </div>
               <h3 className="font-semibold text-[var(--color-text-primary)]">
-                Flat Rs 100 delivery
+                Fast delivery inside Valley
               </h3>
               <p className="mt-1 text-sm text-[var(--color-text-secondary)]">
                 Anywhere across Kathmandu Valley.
@@ -84,7 +84,7 @@ export default function SignUpPage() {
               Create your account
             </h2>
             <p className="mb-6 text-center text-sm text-[var(--color-text-secondary)]">
-              Start shopping with PetMandu.
+              Start shopping with PawMandu.
             </p>
 
             <SignUp

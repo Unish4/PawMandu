@@ -11,6 +11,9 @@ const requiredEnvVars: string[] = [
   "CLERK_SECRET_KEY",
   "CLERK_PUBLISHABLE_KEY",
   "CLERK_WEBHOOK_SECRET",
+  "GMAIL_USER",
+  "GMAIL_APP_PASSWORD",
+  "WHATSAPP_NUMBER",
 ];
 
 requiredEnvVars.forEach((varName) => {
@@ -34,6 +37,11 @@ export const ENV = {
     PUBLISHABLE_KEY: process.env.CLERK_PUBLISHABLE_KEY as string,
     WEBHOOK_SECRET: process.env.CLERK_WEBHOOK_SECRET as string,
   },
+  GMAIL: {
+    USER: process.env.GMAIL_USER as string,
+    APP_PASSWORD: process.env.GMAIL_APP_PASSWORD as string,
+  },
+  WHATSAPP_NUMBER: process.env.WHATSAPP_NUMBER as string,
 };
 
 export const isDevelopment = ENV.NODE_ENV === "development";

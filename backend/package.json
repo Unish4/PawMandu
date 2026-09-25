@@ -25,6 +25,7 @@
     "mongoose": "^9.10.2",
     "morgan": "^1.12.1",
     "multer": "^2.4.0",
+    "nodemailer": "^10.0.10",
     "svix": "^2.5.0"
   },
   "devDependencies": {
@@ -33,6 +34,7 @@
     "@types/morgan": "^1.9.10",
     "@types/multer": "^2.2.0",
     "@types/node": "^26.6.2",
+    "@types/nodemailer": "^8.0.2",
     "ts-node-dev": "^2.0.0",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"

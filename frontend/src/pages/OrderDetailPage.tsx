@@ -1,4 +1,5 @@
 import { useParams, Link } from "react-router";
+import axios from "axios";
 import { useOrder } from "../hooks/useOrder";
 import { OrderStatusBadge } from "../components/order/OrderStatusBadge";
 import { PaymentStatusBadge } from "../components/order/PaymentStatusBadge";
@@ -8,28 +9,61 @@ import { useState } from "react";
 import { useCancelOrder } from "../hooks/useCancelOrder";
 import { ConfirmDialog } from "../components/ConfirmDialog";
 import toast from "react-hot-toast";
+import { ErrorState } from "../components/ErrorState";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 const WHATSAPP_NUMBER = import.meta.env.VITE_WHATSAPP_NUMBER;
 
 export default function OrderDetailPage() {
   const { id } = useParams();
-  const { data: order, isLoading } = useOrder(id);
+  const { data: order, isLoading, isError, error, refetch } = useOrder(id);
 
   const cancelOrder = useCancelOrder();
   const [confirmOpen, setConfirmOpen] = useState(false);
 
   if (isLoading)
     return (
-      <div className="max-w-2xl mx-auto px-6 py-16 text-center text-[var(--color-text-secondary)]">
-        Loading...
+      <div className="py-16 flex justify-center">
+        <LoadingSpinner />
       </div>
     );
-  if (!order)
+  if (isError) {
+    if (axios.isAxiosError(error) && error.response?.status === 404) {
+      return (
+        <div className="max-w-2xl mx-auto px-6 py-16 text-center">
+          <h1 className="text-xl font-semibold text-[var(--color-text-primary)] mb-2">
+            Order not found
+          </h1>
+          <Link
+            to="/shop"
+            className="text-[var(--color-primary)] text-sm font-medium"
+          >
+            Back to shop
+          </Link>
+        </div>
+      );
+    }
+    return (
+      <div className="max-w-2xl mx-auto px-6">
+        <ErrorState onRetry={() => refetch()} />
+      </div>
+    );
+  }
+  if (!order) {
     return (
       <div className="max-w-2xl mx-auto px-6 py-16 text-center">
-        Order not found.
+        <h1 className="text-xl font-semibold text-[var(--color-text-primary)] mb-2">
+          Order not found
+        </h1>
+        <Link
+          to="/shop"
+          className="text-[var(--color-primary)] text-sm font-medium"
+        >
+          Back to shop
+        </Link>
       </div>
     );
+  }
 
   const handleCancel = () => {
     cancelOrder.mutate(order._id, {
@@ -39,11 +73,19 @@ export default function OrderDetailPage() {
     setConfirmOpen(false);
   };
 
-  const whatsappNumber = WHATSAPP_NUMBER || "9779823532028";
+  const formatWhatsAppNumber = (raw?: string) => {
+    let digits = (raw || "").replace(/\D/g, "");
+    if (!digits) return "9779823532028";
+    if (digits.length === 10 && (digits.startsWith("98") || digits.startsWith("97"))) {
+      digits = `977${digits}`;
+    }
+    return digits;
+  };
+  const whatsappNumber = formatWhatsAppNumber(WHATSAPP_NUMBER);
   const whatsappMessage = encodeURIComponent(
     `Hi, I've paid for order ${order.orderNumber} (Rs ${order.total}). Please confirm.`,
   );
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
+  const whatsappLink = `https://api.whatsapp.com/send?phone=${whatsappNumber}&text=${whatsappMessage}`;
   const showPaymentPanel =
     order.paymentStatus === "pending" && order.orderStatus !== "cancelled";
 

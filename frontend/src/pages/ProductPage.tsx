@@ -194,7 +194,7 @@ export default function ProductPage() {
           )}
 
           <p className="text-xs text-[var(--color-text-muted)]">
-            Flat Rs 100 delivery, Kathmandu Valley only — questions? Message us
+            Fast delivery in Kathmandu Valley. Any questions? Message us
             on WhatsApp.
           </p>
         </div>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Plus, Pencil, Trash2, Eye, EyeOff } from "lucide-react";
 import toast from "react-hot-toast";
 import {
@@ -15,6 +15,8 @@ import {
   type UploadedImage,
 } from "../../hooks/useUploadImage";
 import { ImageUploadField } from "../../components/admin/ImageUploadField";
+import { useEscapeKey } from "../../hooks/useEscapeKey";
+
 
 const SPECIES_OPTIONS = ["dog", "cat", "fish"] as const;
 
@@ -55,14 +57,16 @@ function ProductFormModal({
   const updateProduct = useUpdateProduct();
   const isPending = createProduct.isPending || updateProduct.isPending;
 
-  if (!open) return null;
-
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     if (image && image.publicId !== originalPublicId) {
       deleteImage.mutate(image.publicId);
     }
     onClose();
-  };
+  }, [image, originalPublicId, deleteImage, onClose]);
+
+  useEscapeKey(handleCancel, open);
+
+  if (!open) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

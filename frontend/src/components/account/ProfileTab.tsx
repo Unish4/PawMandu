@@ -8,9 +8,11 @@ import {
 } from "../../schemas/profileSchema";
 import { useCurrentUser } from "../../hooks/useCurrentUser";
 import { useUpdateProfile } from "../../hooks/useUpdateProfile";
+import { ErrorState } from "../ErrorState";
+import LoadingSpinner from "../LoadingSpinner";
 
 export function ProfileTab() {
-  const { data: user } = useCurrentUser();
+  const { data: user, isLoading, isError, refetch } = useCurrentUser();
   const updateProfile = useUpdateProfile();
 
   const {
@@ -33,6 +35,14 @@ export function ProfileTab() {
       onError: (err) => toast.error(err.message),
     });
   };
+
+  if (isLoading)
+    return (
+      <div className="py-8 flex justify-center">
+        <LoadingSpinner />
+      </div>
+    );
+  if (isError) return <ErrorState onRetry={() => refetch()} />;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="max-w-md space-y-4">

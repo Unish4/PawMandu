@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { X, ShoppingCart } from "lucide-react";
 import { Link } from "react-router";
 import { useAuth } from "@clerk/react";
@@ -6,21 +5,18 @@ import { useUIStore } from "../../store/uiStore";
 import { useCart } from "../../hooks/useCart";
 import { CartItem } from "./CartItem";
 import { useNavigate } from "react-router";
+import { useEscapeKey } from "../../hooks/useEscapeKey";
+import { ErrorState } from "../ErrorState";
 
 export function CartDrawer() {
   const isOpen = useUIStore((s) => s.isCartOpen);
   const closeCart = useUIStore((s) => s.closeCart);
   const { isSignedIn } = useAuth();
-  const { data: cart, isLoading } = useCart();
+const { data: cart, isLoading, isError, refetch } = useCart();
+
+  useEscapeKey(closeCart, isOpen);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!isOpen) return;
-    const onKeyDown = (e: KeyboardEvent) => e.key === "Escape" && closeCart();
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [isOpen, closeCart]);
 
   if (!isOpen) return null;
 
@@ -64,6 +60,10 @@ export function CartDrawer() {
             <p className="py-8 text-sm text-[var(--color-text-secondary)]">
               Loading...
             </p>
+          ) : isError ? (
+            <div className="py-8">
+              <ErrorState onRetry={() => refetch()} />
+            </div>
           ) : !cart || cart.items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center py-16">
               <ShoppingCart
