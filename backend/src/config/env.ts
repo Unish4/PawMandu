@@ -14,6 +14,7 @@ const requiredEnvVars: string[] = [
   "GMAIL_USER",
   "GMAIL_APP_PASSWORD",
   "WHATSAPP_NUMBER",
+  "ARCJET_KEY",
 ];
 
 requiredEnvVars.forEach((varName) => {
@@ -42,6 +43,7 @@ export const ENV = {
     APP_PASSWORD: process.env.GMAIL_APP_PASSWORD as string,
   },
   WHATSAPP_NUMBER: process.env.WHATSAPP_NUMBER as string,
+  ARCJET_KEY: process.env.ARCJET_KEY as string,
 };
 
 export const isDevelopment = ENV.NODE_ENV === "development";

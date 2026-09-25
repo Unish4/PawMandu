@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { Order, type IOrder } from "../models/Order";
-import { Product } from "../models/Product";
-import { ApiError } from "../utils/ApiError";
+import { Order, type IOrder } from "../models/Order.js";
+import { Product } from "../models/Product.js";
+import { ApiError } from "../utils/ApiError.js";
 
 export async function cancelOrderAndRestoreStock(
   order: IOrder,

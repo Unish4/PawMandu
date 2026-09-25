@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { Product } from "../models/Product";
-import { Category } from "../models/Category";
-import { ApiError } from "../utils/ApiError";
-import { deleteCloudinaryImage } from "../services/cloudinary.service";
+import { Product } from "../models/Product.js";
+import { Category } from "../models/Category.js";
+import { ApiError } from "../utils/ApiError.js";
+import { deleteCloudinaryImage } from "../services/cloudinary.service.js";
 
 export const listProducts = async (
   req: Request,
@@ -145,9 +145,7 @@ export const updateProduct = async (
     const existing = await Product.findById(req.params.id);
     if (!existing) throw new ApiError(404, "Product not found");
 
-    const previousImages = [...existing.images];
-
-    const { species, categoryId, images: newImages } = req.body;
+    const { species, categoryId } = req.body;
     if (species || categoryId) {
       await assertCategoryMatchesSpecies(
         categoryId ?? existing.categoryId.toString(),
@@ -155,23 +153,33 @@ export const updateProduct = async (
       );
     }
 
-    Object.assign(existing, req.body);
+    const previousImages = existing.images;
+
+    // Explicit per-field assignment — same pattern already used in
+    // updateAddress and updateProfile. Only fields actually intended to
+    // be admin-editable can ever reach the document, regardless of what
+    // else shows up in the request body.
+    if (req.body.name !== undefined) existing.name = req.body.name;
+    if (req.body.species !== undefined) existing.species = req.body.species;
+    if (req.body.categoryId !== undefined) existing.categoryId = req.body.categoryId;
+    if (req.body.price !== undefined) existing.price = req.body.price;
+    if (req.body.stock !== undefined) existing.stock = req.body.stock;
+    if (req.body.description !== undefined) existing.description = req.body.description;
+    if (req.body.images !== undefined) existing.images = req.body.images;
+    if (req.body.isActive !== undefined) existing.isActive = req.body.isActive;
+
     await existing.save();
 
-    if (newImages && Array.isArray(newImages)) {
+    if (req.body.images !== undefined) {
       const newPublicIds = new Set(
-        newImages.map((img: string | { publicId: string }) =>
-          typeof img === "string" ? img : img.publicId,
-        ),
+        req.body.images.map((img: { publicId: string }) => img.publicId),
       );
       const removedImages = previousImages.filter(
         (img) => !newPublicIds.has(img.publicId),
       );
-      for (const img of removedImages) {
-        void deleteCloudinaryImage(img.publicId).catch(() => {});
-      }
+      for (const img of removedImages) void deleteCloudinaryImage(img.publicId);
     }
-    
+
     res.status(200).json({ success: true, product: existing });
   } catch (error) {
     next(error);

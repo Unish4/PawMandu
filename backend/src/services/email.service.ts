@@ -1,6 +1,6 @@
-import { transporter, EMAIL_FROM } from "../config/email";
-import { ENV } from "../config/env";
-import type { IOrder } from "../models/Order";
+import { transporter, EMAIL_FROM } from "../config/email.js";
+import { ENV } from "../config/env.js";
+import type { IOrder } from "../models/Order.js";
 
 function formatWhatsAppNumber(raw?: string): string {
   let digits = (raw || "").replace(/\D/g, "");

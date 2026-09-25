@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { ApiError } from "../utils/ApiError";
-import { ENV } from "../config/env";
+import { ApiError } from "../utils/ApiError.js";
+import { ENV } from "../config/env.js";
 
 export const notFoundHandler = (req: Request, res: Response): void => {
   res.status(404).json({

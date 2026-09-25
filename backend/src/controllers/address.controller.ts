@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { Address } from "../models/Address";
-import { ApiError } from "../utils/ApiError";
+import { Address } from "../models/Address.js";
+import { ApiError } from "../utils/ApiError.js";
 
 export const listAddresses = async (
   req: Request,

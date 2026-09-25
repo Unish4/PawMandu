@@ -1,6 +1,6 @@
 import { SignUp } from "@clerk/react";
 import { Link } from "react-router";
-import { Truck, ShieldCheck, MessageCircle, PawPrint } from "lucide-react";
+import { Truck, ShieldCheck, MessageCircle } from "lucide-react";
 
 export default function SignUpPage() {
   return (
@@ -8,9 +8,11 @@ export default function SignUpPage() {
       <header className="h-16 border-b border-[var(--color-border)] bg-[var(--color-surface)]">
         <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-6">
           <Link to="/" className="flex items-center gap-2 no-underline">
-            <span className="text-[var(--color-primary)]">
-              <PawPrint size={24} />
-            </span>
+            <img
+              src="/favicon.png"
+              alt="PawMandu Logo"
+              className="w-6 h-6 object-contain"
+            />
             <span className="text-[17px] font-semibold text-[var(--color-text-primary)]">
               PawMandu
             </span>

@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { Product } from "../models/Product";
-import { ApiError } from "../utils/ApiError";
+import { Product } from "../models/Product.js";
+import { ApiError } from "../utils/ApiError.js";
 
 export const listAllProductsForAdmin = async (
   req: Request,

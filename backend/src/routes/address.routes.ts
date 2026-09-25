@@ -1,16 +1,16 @@
 import { Router } from "express";
-import { attachUser } from "../middleware/attachUser";
-import { validateRequest } from "../middleware/validateRequest";
+import { attachUser } from "../middleware/attachUser.js";
+import { validateRequest } from "../middleware/validateRequest.js";
 import {
   createAddressValidator,
   updateAddressValidator,
-} from "../validators/address.validator";
+} from "../validators/address.validator.js";
 import {
   listAddresses,
   createAddress,
   updateAddress,
   deleteAddress,
-} from "../controllers/address.controller";
+} from "../controllers/address.controller.js";
 import { param } from "express-validator";
 
 const router = Router();
