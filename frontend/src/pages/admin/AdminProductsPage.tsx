@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { Plus, Pencil, Trash2, Eye, EyeOff } from "lucide-react";
+import { Plus, Pencil, Trash2, Eye, EyeOff, X, Package } from "lucide-react";
 import toast from "react-hot-toast";
 import {
   useAdminProducts,
@@ -16,7 +16,6 @@ import {
 } from "../../hooks/useUploadImage";
 import { ImageUploadField } from "../../components/admin/ImageUploadField";
 import { useEscapeKey } from "../../hooks/useEscapeKey";
-
 
 const SPECIES_OPTIONS = ["dog", "cat", "fish"] as const;
 
@@ -92,65 +91,83 @@ function ProductFormModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
-      <div className="w-full max-w-md rounded-[var(--radius-xl)] bg-white p-6 shadow-[0_20px_48px_rgba(28,25,23,0.16)] max-h-[90vh] overflow-y-auto">
-        <h3 className="text-lg font-semibold text-[var(--color-text-primary)] mb-4">
-          {existing ? "Edit product" : "Add product"}
-        </h3>
-        <form onSubmit={handleSubmit} className="space-y-3">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-3 sm:p-4">
+      <div className="w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-[var(--color-surface)] p-4 sm:p-6 shadow-2xl border border-[var(--color-border)]">
+        <div className="flex items-center justify-between border-b border-[var(--color-border)] pb-3 mb-4">
+          <div className="flex items-center gap-2">
+            <Package size={20} className="text-[var(--color-primary)]" />
+            <h3 className="text-lg font-bold text-[var(--color-text-primary)]">
+              {existing ? "Edit product" : "Add new product"}
+            </h3>
+          </div>
+          <button
+            onClick={handleCancel}
+            className="p-1 rounded-lg text-[var(--color-text-secondary)] hover:bg-neutral-100"
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-medium text-[var(--color-text-secondary)] mb-1">
-              Name
+            <label className="block text-xs font-semibold text-[var(--color-text-secondary)] mb-1">
+              Product Name
             </label>
             <input
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full h-10 px-3 rounded-[var(--radius-md)] border border-[var(--color-border)] text-sm"
+              placeholder="e.g. Premium Dog Kibble"
+              className="w-full h-10 px-3 rounded-lg border border-[var(--color-border)] text-sm focus:outline-none focus:border-[var(--color-primary)] focus:ring-1 focus:ring-[var(--color-primary)]"
             />
           </div>
-          <div>
-            <label className="block text-xs font-medium text-[var(--color-text-secondary)] mb-1">
-              Species
-            </label>
-            <select
-              value={species}
-              onChange={(e) => {
-                setSpecies(e.target.value);
-                setCategoryId("");
-              }}
-              className="w-full h-10 px-3 rounded-[var(--radius-md)] border border-[var(--color-border)] text-sm"
-            >
-              {SPECIES_OPTIONS.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label className="block text-xs font-medium text-[var(--color-text-secondary)] mb-1">
-              Category
-            </label>
-            <select
-              value={categoryId}
-              onChange={(e) => setCategoryId(e.target.value)}
-              required
-              className="w-full h-10 px-3 rounded-[var(--radius-md)] border border-[var(--color-border)] text-sm"
-            >
-              <option value="" disabled>
-                Select category
-              </option>
-              {categories?.map((c) => (
-                <option key={c._id} value={c._id}>
-                  {c.name}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
+
+          <div className="grid grid-cols-1 min-[420px]:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-[var(--color-text-secondary)] mb-1">
+              <label className="block text-xs font-semibold text-[var(--color-text-secondary)] mb-1">
+                Species
+              </label>
+              <select
+                value={species}
+                onChange={(e) => {
+                  setSpecies(e.target.value);
+                  setCategoryId("");
+                }}
+                className="w-full h-10 px-3 rounded-lg border border-[var(--color-border)] text-sm focus:outline-none focus:border-[var(--color-primary)]"
+              >
+                {SPECIES_OPTIONS.map((s) => (
+                  <option key={s} value={s}>
+                    {s.toUpperCase()}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-[var(--color-text-secondary)] mb-1">
+                Category
+              </label>
+              <select
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+                required
+                className="w-full h-10 px-3 rounded-lg border border-[var(--color-border)] text-sm focus:outline-none focus:border-[var(--color-primary)]"
+              >
+                <option value="" disabled>
+                  Select category
+                </option>
+                {categories?.map((c) => (
+                  <option key={c._id} value={c._id}>
+                    {c.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 min-[420px]:grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs font-semibold text-[var(--color-text-secondary)] mb-1">
                 Price (Rs)
               </label>
               <input
@@ -159,12 +176,13 @@ function ProductFormModal({
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 required
-                className="w-full h-10 px-3 rounded-[var(--radius-md)] border border-[var(--color-border)] text-sm"
+                placeholder="0"
+                className="w-full h-10 px-3 rounded-lg border border-[var(--color-border)] text-sm focus:outline-none focus:border-[var(--color-primary)]"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-[var(--color-text-secondary)] mb-1">
-                Stock
+              <label className="block text-xs font-semibold text-[var(--color-text-secondary)] mb-1">
+                Stock Quantity
               </label>
               <input
                 type="number"
@@ -172,24 +190,28 @@ function ProductFormModal({
                 value={stock}
                 onChange={(e) => setStock(e.target.value)}
                 required
-                className="w-full h-10 px-3 rounded-[var(--radius-md)] border border-[var(--color-border)] text-sm"
+                placeholder="0"
+                className="w-full h-10 px-3 rounded-lg border border-[var(--color-border)] text-sm focus:outline-none focus:border-[var(--color-primary)]"
               />
             </div>
           </div>
+
           <div>
-            <label className="block text-xs font-medium text-[var(--color-text-secondary)] mb-1">
+            <label className="block text-xs font-semibold text-[var(--color-text-secondary)] mb-1">
               Description
             </label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
-              className="w-full px-3 py-2 rounded-[var(--radius-md)] border border-[var(--color-border)] text-sm"
+              placeholder="Product details, specs, ingredient notes..."
+              className="w-full px-3 py-2 rounded-lg border border-[var(--color-border)] text-sm focus:outline-none focus:border-[var(--color-primary)]"
             />
           </div>
+
           <div>
-            <label className="block text-xs font-medium text-[var(--color-text-secondary)] mb-1">
-              Product image
+            <label className="block text-xs font-semibold text-[var(--color-text-secondary)] mb-1">
+              Product Image
             </label>
             <ImageUploadField
               value={image}
@@ -197,27 +219,29 @@ function ProductFormModal({
               originalPublicId={originalPublicId}
             />
           </div>
-          <label className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)]">
+
+          <label className="flex items-center gap-2 text-sm text-[var(--color-text-secondary)] pt-1 cursor-pointer">
             <input
               type="checkbox"
               checked={isActive}
               onChange={(e) => setIsActive(e.target.checked)}
-              className="rounded accent-[var(--color-primary)]"
+              className="w-4 h-4 rounded accent-[var(--color-primary)]"
             />
-            Active (visible in shop)
+            <span className="font-medium text-xs sm:text-sm">Active in store (visible to customers)</span>
           </label>
-          <div className="flex justify-end gap-2 pt-2">
+
+          <div className="flex justify-end gap-2.5 pt-3 border-t border-[var(--color-border)]">
             <button
               type="button"
               onClick={handleCancel}
-              className="px-4 py-2 text-sm font-medium rounded-[var(--radius-md)] border border-[var(--color-border)] text-[var(--color-text-secondary)]"
+              className="px-4 py-2 text-sm font-medium rounded-lg border border-[var(--color-border)] text-[var(--color-text-secondary)] hover:bg-neutral-100 transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isPending}
-              className="px-4 py-2 text-sm font-semibold text-white bg-[var(--color-primary)] rounded-[var(--radius-md)] disabled:opacity-40"
+              className="px-4 py-2 text-sm font-semibold text-white bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] rounded-lg disabled:opacity-50 transition-colors shadow-xs"
             >
               {isPending ? "Saving..." : "Save product"}
             </button>
@@ -260,89 +284,180 @@ export default function AdminProductsPage() {
   };
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-xl font-semibold text-[var(--color-text-primary)]">
-          Products
-        </h1>
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
+      {/* Page Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-bold text-[var(--color-text-primary)]">
+            Products Directory
+          </h1>
+          <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mt-1">
+            Manage your catalog items, pricing, inventory stock, and visibility.
+          </p>
+        </div>
         <button
           onClick={() => {
             setEditing(undefined);
             setFormOpen(true);
           }}
-          className="flex items-center gap-1.5 text-sm font-semibold px-4 py-2 rounded-[var(--radius-md)] bg-[var(--color-primary)] text-white"
+          className="flex items-center justify-center gap-1.5 text-sm font-semibold px-4 py-2.5 rounded-lg bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white transition-colors shadow-xs shrink-0"
         >
-          <Plus size={16} /> Add product
+          <Plus size={18} /> Add new product
         </button>
       </div>
 
-      <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-neutral-50 text-left text-xs uppercase tracking-wide text-[var(--color-text-muted)]">
+      {/* Mobile Card View (< md screens) */}
+      <div className="block md:hidden space-y-3">
+        {isLoading ? (
+          <div className="p-8 text-center bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] text-[var(--color-text-secondary)] text-sm">
+            Loading catalog...
+          </div>
+        ) : products?.length === 0 ? (
+          <div className="p-8 text-center bg-[var(--color-surface)] rounded-xl border border-[var(--color-border)] text-[var(--color-text-muted)] text-sm">
+            No products created yet.
+          </div>
+        ) : (
+          products?.map((p) => (
+            <div
+              key={p._id}
+              className="p-4 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-xs flex flex-col gap-3"
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <h3 className="font-bold text-sm text-[var(--color-text-primary)] line-clamp-1">
+                    {p.name}
+                  </h3>
+                  <span className="text-xs capitalize font-medium text-[var(--color-text-muted)]">
+                    {p.species} category
+                  </span>
+                </div>
+                <span
+                  className={`text-xs font-semibold px-2.5 py-0.5 rounded-full shrink-0 ${
+                    p.isActive
+                      ? "bg-[var(--color-primary-light)] text-[var(--color-primary)]"
+                      : "bg-neutral-100 text-[var(--color-text-muted)]"
+                  }`}
+                >
+                  {p.isActive ? "Active" : "Inactive"}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between border-t border-[var(--color-border)] pt-2.5 text-sm">
+                <div>
+                  <span className="text-xs text-[var(--color-text-muted)] block">Price & Stock</span>
+                  <span className="font-bold text-[var(--color-text-primary)]">
+                    Rs {p.price.toLocaleString("en-IN")}
+                  </span>
+                  <span className="text-xs text-[var(--color-text-secondary)] ml-2">
+                    ({p.stock} in stock)
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => toggleActive(p)}
+                    disabled={updateProduct.isPending}
+                    title={p.isActive ? "Deactivate" : "Activate"}
+                    className="p-2 rounded-lg text-[var(--color-text-secondary)] hover:bg-neutral-100 hover:text-[var(--color-primary)] disabled:opacity-40"
+                  >
+                    {p.isActive ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setEditing(p);
+                      setFormOpen(true);
+                    }}
+                    className="p-2 rounded-lg text-[var(--color-text-secondary)] hover:bg-neutral-100 hover:text-[var(--color-primary)]"
+                  >
+                    <Pencil size={16} />
+                  </button>
+                  <button
+                    onClick={() => setDeletingId(p._id)}
+                    className="p-2 rounded-lg text-[var(--color-text-secondary)] hover:bg-red-50 hover:text-red-600"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Desktop Table View (md+ screens) */}
+      <div className="hidden md:block rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] overflow-x-auto shadow-xs">
+        <table className="w-full text-sm text-left">
+          <thead className="bg-neutral-50 border-b border-[var(--color-border)] text-xs uppercase tracking-wider text-[var(--color-text-muted)] font-semibold">
             <tr>
-              <th className="px-4 py-3">Name</th>
-              <th className="px-4 py-3">Species</th>
-              <th className="px-4 py-3">Price</th>
-              <th className="px-4 py-3">Stock</th>
-              <th className="px-4 py-3">Status</th>
-              <th className="px-4 py-3"></th>
+              <th className="px-5 py-3.5">Name</th>
+              <th className="px-5 py-3.5">Species</th>
+              <th className="px-5 py-3.5">Price</th>
+              <th className="px-5 py-3.5">Stock</th>
+              <th className="px-5 py-3.5">Status</th>
+              <th className="px-5 py-3.5 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-[var(--color-border)]">
             {isLoading ? (
               <tr>
                 <td
                   colSpan={6}
-                  className="px-4 py-6 text-center text-[var(--color-text-secondary)]"
+                  className="px-5 py-8 text-center text-[var(--color-text-secondary)]"
                 >
-                  Loading...
+                  Loading product catalog...
                 </td>
               </tr>
             ) : (
               products?.map((p) => (
                 <tr
                   key={p._id}
-                  className="border-t border-[var(--color-border)]"
+                  className="hover:bg-neutral-50/60 transition-colors"
                 >
-                  <td className="px-4 py-3 font-medium text-[var(--color-text-primary)] max-w-[240px] truncate">
+                  <td className="px-5 py-4 font-semibold text-[var(--color-text-primary)] max-w-[260px] truncate">
                     {p.name}
                   </td>
-                  <td className="px-4 py-3 capitalize">{p.species}</td>
-                  <td className="px-4 py-3">
+                  <td className="px-5 py-4 capitalize font-medium">{p.species}</td>
+                  <td className="px-5 py-4 font-medium">
                     Rs {p.price.toLocaleString("en-IN")}
                   </td>
-                  <td className="px-4 py-3">{p.stock}</td>
-                  <td className="px-4 py-3">
+                  <td className="px-5 py-4">{p.stock}</td>
+                  <td className="px-5 py-4">
                     <span
-                      className={`text-xs font-medium px-2 py-0.5 rounded-full ${p.isActive ? "bg-[var(--color-primary-light)] text-[var(--color-primary)]" : "bg-neutral-100 text-[var(--color-text-muted)]"}`}
+                      className={`text-xs font-semibold px-2.5 py-1 rounded-full ${
+                        p.isActive
+                          ? "bg-[var(--color-primary-light)] text-[var(--color-primary)]"
+                          : "bg-neutral-100 text-[var(--color-text-muted)]"
+                      }`}
                     >
                       {p.isActive ? "Active" : "Inactive"}
                     </span>
                   </td>
-                  <td className="px-4 py-3">
-                    <div className="flex gap-2">
+                  <td className="px-5 py-4 text-right">
+                    <div className="flex items-center justify-end gap-1">
                       <button
                         onClick={() => toggleActive(p)}
                         disabled={updateProduct.isPending}
                         title={p.isActive ? "Deactivate" : "Activate"}
-                        className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] disabled:opacity-40"
+                        className="p-1.5 rounded-md text-[var(--color-text-secondary)] hover:bg-neutral-100 hover:text-[var(--color-primary)] disabled:opacity-40"
                       >
-                        {p.isActive ? <EyeOff size={15} /> : <Eye size={15} />}
+                        {p.isActive ? <EyeOff size={16} /> : <Eye size={16} />}
                       </button>
                       <button
                         onClick={() => {
                           setEditing(p);
                           setFormOpen(true);
                         }}
-                        className="text-[var(--color-text-secondary)] hover:text-[var(--color-primary)]"
+                        title="Edit product"
+                        className="p-1.5 rounded-md text-[var(--color-text-secondary)] hover:bg-neutral-100 hover:text-[var(--color-primary)]"
                       >
-                        <Pencil size={15} />
+                        <Pencil size={16} />
                       </button>
                       <button
                         onClick={() => setDeletingId(p._id)}
-                        className="text-[var(--color-text-secondary)] hover:text-red-600"
+                        title="Delete product"
+                        className="p-1.5 rounded-md text-[var(--color-text-secondary)] hover:bg-red-50 hover:text-red-600"
                       >
-                        <Trash2 size={15} />
+                        <Trash2 size={16} />
                       </button>
                     </div>
                   </td>
@@ -363,8 +478,8 @@ export default function AdminProductsPage() {
       )}
       <ConfirmDialog
         open={!!deletingId}
-        title="Delete this product?"
-        description="This removes it permanently and can't be undone. If you just want to hide it from the shop, use the deactivate toggle instead."
+        title="Delete product permanently?"
+        description="This removes it permanently from storage and catalog records. If you just want to hide it from customers, deactivate it instead."
         confirmLabel="Delete"
         onConfirm={confirmDelete}
         onCancel={() => setDeletingId(null)}

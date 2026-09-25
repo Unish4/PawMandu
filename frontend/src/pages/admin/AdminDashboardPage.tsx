@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { ClipboardList, Wallet, AlertCircle, PackageX } from "lucide-react";
+import { ClipboardList, Wallet, AlertCircle, PackageX, ChevronRight } from "lucide-react";
 import { useAdminDashboardStats } from "../../hooks/useAdminDashboard";
 import { useAdminOrders } from "../../hooks/useAdminOrders";
 import { useAdminProducts } from "../../hooks/useAdminProducts";
@@ -49,116 +49,153 @@ export default function AdminDashboardPage() {
   ];
 
   return (
-    <div className="p-8">
-      <h1 className="text-xl font-semibold text-[var(--color-text-primary)] mb-6">
-        Dashboard
-      </h1>
+    <div className="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-xl sm:text-2xl font-bold text-[var(--color-text-primary)]">
+          Dashboard Overview
+        </h1>
+        <p className="text-xs sm:text-sm text-[var(--color-text-secondary)] mt-1">
+          Monitor your store sales, pending orders, and inventory metrics.
+        </p>
+      </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+      {/* Metric Cards Grid */}
+      <div className="grid grid-cols-1 min-[420px]:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 mb-6 sm:mb-8">
         {cards.map((c) => (
           <div
             key={c.label}
-            className={`rounded-[var(--radius-lg)] border p-4 ${c.accent ? "border-amber-200 bg-amber-50" : "border-[var(--color-border)] bg-[var(--color-surface)]"}`}
+            className={`rounded-[var(--radius-lg)] border p-4 sm:p-5 transition-all shadow-xs ${
+              c.accent
+                ? "border-amber-200 bg-amber-50/60"
+                : "border-[var(--color-border)] bg-[var(--color-surface)]"
+            }`}
           >
-            <c.Icon
-              size={18}
-              className={
-                c.accent
-                  ? "text-amber-600"
-                  : "text-[var(--color-text-secondary)]"
-              }
-            />
-            <p className="text-2xl font-bold text-[var(--color-text-primary)] mt-2">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-[var(--color-text-secondary)]">
+                {c.label}
+              </span>
+              <div
+                className={`p-2 rounded-lg ${
+                  c.accent ? "bg-amber-100 text-amber-700" : "bg-neutral-100 text-[var(--color-text-secondary)]"
+                }`}
+              >
+                <c.Icon size={18} />
+              </div>
+            </div>
+            <p className="text-xl sm:text-2xl font-bold text-[var(--color-text-primary)] mt-3 tracking-tight">
               {c.value}
-            </p>
-            <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">
-              {c.label}
             </p>
           </div>
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-[3fr_2fr] gap-6">
-        <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="font-semibold text-[var(--color-text-primary)]">
-              Recent orders
-            </h2>
-            <Link
-              to="/admin/orders"
-              className="text-xs font-medium text-[var(--color-primary)]"
-            >
-              View all
-            </Link>
-          </div>
-          <div className="space-y-3">
-            {recentOrders?.orders.map((o) => (
-              <div
-                key={o._id}
-                className="flex items-center justify-between text-sm"
-              >
-                <div>
-                  <p className="font-medium text-[var(--color-text-primary)]">
-                    {o.orderNumber}
-                  </p>
-                  <p className="text-xs text-[var(--color-text-muted)]">
-                    Rs {o.total.toLocaleString("en-IN")}
-                  </p>
-                </div>
-                <div className="flex gap-1.5">
-                  <OrderStatusBadge status={o.orderStatus} />
-                  <PaymentStatusBadge status={o.paymentStatus} />
-                </div>
+      {/* Main Content Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-6">
+        {/* Recent Orders */}
+        <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 sm:p-5 shadow-xs flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-[var(--color-border)]">
+              <div>
+                <h2 className="font-bold text-base text-[var(--color-text-primary)]">
+                  Recent Orders
+                </h2>
+                <p className="text-xs text-[var(--color-text-muted)]">
+                  Latest customer orders placed
+                </p>
               </div>
-            ))}
-            {recentOrders?.orders.length === 0 && (
-              <p className="text-sm text-[var(--color-text-muted)]">
-                No orders yet.
-              </p>
-            )}
+              <Link
+                to="/admin/orders"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--color-primary)] hover:underline no-underline"
+              >
+                <span>View all</span>
+                <ChevronRight size={14} />
+              </Link>
+            </div>
+
+            <div className="space-y-3">
+              {recentOrders?.orders.map((o) => (
+                <div
+                  key={o._id}
+                  className="flex flex-col min-[440px]:flex-row min-[440px]:items-center justify-between p-3 rounded-lg border border-[var(--color-border)] hover:bg-neutral-50/50 transition-colors gap-2"
+                >
+                  <div className="min-w-0">
+                    <p className="font-semibold text-sm text-[var(--color-text-primary)] truncate">
+                      {o.orderNumber}
+                    </p>
+                    <p className="text-xs text-[var(--color-text-muted)]">
+                      Rs {o.total.toLocaleString("en-IN")}
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap items-center gap-1.5 shrink-0">
+                    <OrderStatusBadge status={o.orderStatus} />
+                    <PaymentStatusBadge status={o.paymentStatus} />
+                  </div>
+                </div>
+              ))}
+              {recentOrders?.orders.length === 0 && (
+                <p className="text-sm text-center py-6 text-[var(--color-text-muted)]">
+                  No orders placed yet.
+                </p>
+              )}
+            </div>
           </div>
         </div>
 
-        <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="font-semibold text-[var(--color-text-primary)]">
-              Low stock
-            </h2>
-            <Link
-              to="/admin/inventory"
-              className="text-xs font-medium text-[var(--color-primary)]"
-            >
-              View all
-            </Link>
-          </div>
-          <div className="space-y-3">
-            {isProductsLoading ? (
-              <p className="text-sm text-[var(--color-text-secondary)]">
-                Loading...
-              </p>
-            ) : isProductsError ? (
-              <p className="text-sm text-red-600">
-                {productsError?.message || "Failed to load low stock items."}
-              </p>
-            ) : lowStockProducts.length === 0 ? (
-              <p className="text-sm text-[var(--color-text-muted)]">
-                Nothing low on stock.
-              </p>
-            ) : (
-              lowStockProducts.map((p) => (
-                <div
-                  key={p._id}
-                  className="flex items-center justify-between text-sm"
-                >
-                  <span className="text-[var(--color-text-primary)] line-clamp-1">
-                    {p.name}
-                  </span>
-                  <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-amber-50 text-amber-700">
-                    {p.stock} left
-                  </span>
+        {/* Low Stock Alerts */}
+        <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 sm:p-5 shadow-xs flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between mb-4 pb-3 border-b border-[var(--color-border)]">
+              <div>
+                <h2 className="font-bold text-base text-[var(--color-text-primary)]">
+                  Low Stock Alert
+                </h2>
+                <p className="text-xs text-[var(--color-text-muted)]">
+                  Items requiring inventory restock
+                </p>
+              </div>
+              <Link
+                to="/admin/inventory"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--color-primary)] hover:underline no-underline"
+              >
+                <span>Manage</span>
+                <ChevronRight size={14} />
+              </Link>
+            </div>
+
+            <div className="space-y-2.5">
+              {isProductsLoading ? (
+                <p className="text-sm text-[var(--color-text-secondary)] py-4 text-center">
+                  Loading inventory...
+                </p>
+              ) : isProductsError ? (
+                <p className="text-sm text-red-600 py-4 text-center">
+                  {productsError?.message || "Failed to load low stock items."}
+                </p>
+              ) : lowStockProducts.length === 0 ? (
+                <div className="text-center py-6">
+                  <p className="text-sm font-medium text-emerald-700">
+                    All inventory levels healthy!
+                  </p>
+                  <p className="text-xs text-[var(--color-text-muted)] mt-0.5">
+                    No products below low stock threshold.
+                  </p>
                 </div>
-              ))
-            )}
+              ) : (
+                lowStockProducts.map((p) => (
+                  <div
+                    key={p._id}
+                    className="flex items-center justify-between p-3 rounded-lg border border-amber-200/70 bg-amber-50/40 text-sm gap-2"
+                  >
+                    <span className="text-[var(--color-text-primary)] font-medium text-xs sm:text-sm line-clamp-1 min-w-0">
+                      {p.name}
+                    </span>
+                    <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800 shrink-0">
+                      {p.stock} left
+                    </span>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
       </div>
