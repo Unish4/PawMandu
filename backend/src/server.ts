@@ -3,23 +3,27 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import { clerkMiddleware } from "@clerk/express";
-import { ENV, isDevelopment } from "./config/env";
-import { connectDB } from "./config/db";
-import webhookRouter from "./routes/webhook.routes";
-import userRouter from "./routes/user.routes";
-import { notFoundHandler, errorHandler } from "./middleware/errorHandler";
-import addressRouter from "./routes/address.routes";
-import productRouter from "./routes/product.routes";
-import categoryRouter from "./routes/category.routes";
-import cartRouter from "./routes/cart.routes";
-import orderRouter from "./routes/order.routes";
-import adminOrderRouter from "./routes/adminOrder.routes";
-import adminProductRouter from "./routes/adminProduct.routes";
-import adminDashboardRouter from "./routes/adminDashboard.routes";
-import uploadRouter from "./routes/upload.routes";
-import { transporter } from "./config/email";
+import { ENV, isDevelopment } from "./config/env.js";
+import { connectDB } from "./config/db.js";
+import webhookRouter from "./routes/webhook.routes.js";
+import userRouter from "./routes/user.routes.js";
+import { notFoundHandler, errorHandler } from "./middleware/errorHandler.js";
+import { arcjetProtect } from "./middleware/arcjetProtect.js";
+import { generalLimiter, webhookLimiter } from "./middleware/rateLimiter.js";
+import addressRouter from "./routes/address.routes.js";
+import productRouter from "./routes/product.routes.js";
+import categoryRouter from "./routes/category.routes.js";
+import cartRouter from "./routes/cart.routes.js";
+import orderRouter from "./routes/order.routes.js";
+import adminOrderRouter from "./routes/adminOrder.routes.js";
+import adminProductRouter from "./routes/adminProduct.routes.js";
+import adminDashboardRouter from "./routes/adminDashboard.routes.js";
+import uploadRouter from "./routes/upload.routes.js";
+import { transporter } from "./config/email.js";
 
 const app = express();
+
+app.set("trust proxy", 1);
 
 app.use(helmet());
 
@@ -32,11 +36,14 @@ app.use(
 
 app.use(morgan(isDevelopment ? "dev" : "combined"));
 
-app.use("/api/webhooks", webhookRouter);
+app.use("/api/webhooks", webhookLimiter, webhookRouter);
 
 app.use(express.json({ limit: "1mb" }));
 
 app.use(clerkMiddleware());
+
+app.use(arcjetProtect);
+app.use(generalLimiter);
 
 app.get("/", (_req: Request, res: Response) => {
   res.json({

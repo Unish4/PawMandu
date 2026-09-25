@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { attachUser } from "../middleware/attachUser";
-import { requireAdmin } from "../middleware/requireAdmin";
+import { attachUser } from "../middleware/attachUser.js";
+import { requireAdmin } from "../middleware/requireAdmin.js";
 import {
   listAllProductsForAdmin,
   adjustProductStock,
-} from "../controllers/adminProduct.controller";
+} from "../controllers/adminProduct.controller.js";
 
 const router = Router();
 router.use(attachUser, requireAdmin);

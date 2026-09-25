@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { Order } from "../models/Order";
-import { Product } from "../models/Product";
+import { Order } from "../models/Order.js";
+import { Product } from "../models/Product.js";
 
 export const getDashboardStats = async (
   req: Request,

@@ -1,6 +1,6 @@
 import { Schema, model, Document, Types } from "mongoose";
-import { slugify } from "../utils/slugify";
-import type { Species } from "./Category";
+import { slugify } from "../utils/slugify.js";
+import type { Species } from "./Category.js";
 
 interface IProductImage {
   url: string;
@@ -70,6 +70,11 @@ const productSchema = new Schema<IProduct>(
   },
   { timestamps: true },
 );
+
+productSchema.index({ isActive: 1, species: 1, price: 1 });
+productSchema.index({ isActive: 1, species: 1, createdAt: -1 });
+productSchema.index({ isActive: 1, price: 1 });
+productSchema.index({ isActive: 1, createdAt: -1 });
 
 productSchema.pre("validate", function () {
   if (this.isModified("name") || !this.slug) {

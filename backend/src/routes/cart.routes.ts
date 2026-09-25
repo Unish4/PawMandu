@@ -1,16 +1,16 @@
 import { Router } from "express";
-import { attachUser } from "../middleware/attachUser";
-import { validateRequest } from "../middleware/validateRequest";
+import { attachUser } from "../middleware/attachUser.js";
+import { validateRequest } from "../middleware/validateRequest.js";
 import {
   addToCartValidator,
   updateCartItemValidator,
-} from "../validators/cart.validator";
+} from "../validators/cart.validator.js";
 import {
   getCart,
   addToCart,
   updateCartItem,
   removeCartItem,
-} from "../controllers/cart.controller";
+} from "../controllers/cart.controller.js";
 
 const router = Router();
 

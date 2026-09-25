@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { attachUser } from "../middleware/attachUser";
-import { requireAdmin } from "../middleware/requireAdmin";
-import { validateRequest } from "../middleware/validateRequest";
-import { updateProfileValidator } from "../validators/user.validator";
-import { getMe, updateProfile } from "../controllers/user.controller";
+import { attachUser } from "../middleware/attachUser.js";
+import { requireAdmin } from "../middleware/requireAdmin.js";
+import { validateRequest } from "../middleware/validateRequest.js";
+import { updateProfileValidator } from "../validators/user.validator.js";
+import { getMe, updateProfile } from "../controllers/user.controller.js";
 
 const router = Router();
 

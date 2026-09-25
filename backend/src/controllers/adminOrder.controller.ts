@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { Order } from "../models/Order";
-import { ApiError } from "../utils/ApiError";
-import { isValidTransition } from "../constants/orderTransitions";
-import { cancelOrderAndRestoreStock } from "../services/order.service";
+import { Order } from "../models/Order.js";
+import { ApiError } from "../utils/ApiError.js";
+import { isValidTransition } from "../constants/orderTransitions.js";
+import { cancelOrderAndRestoreStock } from "../services/order.service.js";
 
 export const listAdminOrders = async (
   req: Request,

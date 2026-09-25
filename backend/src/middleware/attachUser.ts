@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { getAuth, clerkClient } from "@clerk/express";
 
-import { User } from "../models/User";
-import { ApiError } from "../utils/ApiError";
+import { User } from "../models/User.js";
+import { ApiError } from "../utils/ApiError.js";
 
 export const attachUser = async (
   req: Request,

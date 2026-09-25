@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Outlet, Link, NavLink, useLocation, useNavigate } from "react-router";
 import {
-  PawPrint,
   ShoppingCart,
   User,
   ShieldCheck,
@@ -97,9 +96,11 @@ export default function Root() {
           to="/"
           className="flex items-center gap-2 flex-shrink-0 no-underline"
         >
-          <span className="text-[var(--color-primary)]">
-            <PawPrint size={26} />
-          </span>
+          <img
+            src="/favicon.png"
+            alt="PawMandu Logo"
+            className="w-7 h-7 object-contain"
+          />
           <span className="text-[17px] font-semibold text-[var(--color-text-primary)] tracking-tight">
             PawMandu
           </span>
@@ -200,9 +201,11 @@ export default function Root() {
             onClick={() => setIsMobileMenuOpen(false)}
             className="flex items-center gap-2 no-underline"
           >
-            <span className="text-[var(--color-primary)]">
-              <PawPrint size={24} />
-            </span>
+            <img
+              src="/favicon.png"
+              alt="PawMandu Logo"
+              className="w-6 h-6 object-contain"
+            />
             <span className="text-base font-semibold text-[var(--color-text-primary)]">
               PawMandu
             </span>

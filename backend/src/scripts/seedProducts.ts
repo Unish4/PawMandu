@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { ENV } from "../config/env";
-import { Category } from "../models/Category";
-import { Product } from "../models/Product";
+import { ENV } from "../config/env.js";
+import { Category } from "../models/Category.js";
+import { Product } from "../models/Product.js";
 
 interface SeedProduct {
   name: string;
@@ -14,7 +14,7 @@ interface SeedProduct {
 
 const PRODUCTS: SeedProduct[] = [
   {
-    name: "PetMandu Chicken & Rice Dry Dog Food 3kg",
+    name: "PawMandu Chicken & Rice Dry Dog Food 3kg",
     species: "dog",
     categoryName: "Dry food",
     price: 1450,
@@ -23,7 +23,7 @@ const PRODUCTS: SeedProduct[] = [
       "Balanced adult dog food with real chicken as the first ingredient, no artificial colors.",
   },
   {
-    name: "PetMandu Puppy Starter Kibble 1.5kg",
+    name: "PawMandu Puppy Starter Kibble 1.5kg",
     species: "dog",
     categoryName: "Dry food",
     price: 950,
@@ -32,7 +32,7 @@ const PRODUCTS: SeedProduct[] = [
       "Smaller kibble size formulated for puppies up to 12 months, with added DHA for development.",
   },
   {
-    name: "PetMandu Senior Dog Formula 3kg",
+    name: "PawMandu Senior Dog Formula 3kg",
     species: "dog",
     categoryName: "Dry food",
     price: 1600,
@@ -42,7 +42,7 @@ const PRODUCTS: SeedProduct[] = [
   },
 
   {
-    name: "PetMandu Beef Jerky Strips 200g",
+    name: "PawMandu Beef Jerky Strips 200g",
     species: "dog",
     categoryName: "Treats",
     price: 380,
@@ -51,7 +51,7 @@ const PRODUCTS: SeedProduct[] = [
       "Slow-dried beef strips with no added preservatives, great for training rewards.",
   },
   {
-    name: "PetMandu Dental Chew Sticks (Pack of 6)",
+    name: "PawMandu Dental Chew Sticks (Pack of 6)",
     species: "dog",
     categoryName: "Treats",
     price: 420,
@@ -60,7 +60,7 @@ const PRODUCTS: SeedProduct[] = [
       "Textured chews that help reduce plaque buildup during regular chewing.",
   },
   {
-    name: "PetMandu Peanut Butter Biscuits 250g",
+    name: "PawMandu Peanut Butter Biscuits 250g",
     species: "dog",
     categoryName: "Treats",
     price: 300,
@@ -70,7 +70,7 @@ const PRODUCTS: SeedProduct[] = [
   },
 
   {
-    name: "PetMandu Rubber Chew Ball",
+    name: "PawMandu Rubber Chew Ball",
     species: "dog",
     categoryName: "Toys",
     price: 350,
@@ -79,7 +79,7 @@ const PRODUCTS: SeedProduct[] = [
       "Durable natural rubber ball sized for medium to large breeds.",
   },
   {
-    name: "PetMandu Rope Tug Toy",
+    name: "PawMandu Rope Tug Toy",
     species: "dog",
     categoryName: "Toys",
     price: 280,
@@ -87,7 +87,7 @@ const PRODUCTS: SeedProduct[] = [
     description: "Triple-braided cotton rope for tug-of-war and light chewing.",
   },
   {
-    name: "PetMandu Squeaky Plush Fox",
+    name: "PawMandu Squeaky Plush Fox",
     species: "dog",
     categoryName: "Toys",
     price: 420,
@@ -97,7 +97,7 @@ const PRODUCTS: SeedProduct[] = [
   },
 
   {
-    name: "PetMandu Adjustable Nylon Collar (M)",
+    name: "PawMandu Adjustable Nylon Collar (M)",
     species: "dog",
     categoryName: "Collars & leashes",
     price: 450,
@@ -106,7 +106,7 @@ const PRODUCTS: SeedProduct[] = [
       "Adjustable collar with a quick-release buckle, fits 30–45cm neck sizes.",
   },
   {
-    name: "PetMandu Padded Walking Leash 1.5m",
+    name: "PawMandu Padded Walking Leash 1.5m",
     species: "dog",
     categoryName: "Collars & leashes",
     price: 650,
@@ -116,7 +116,7 @@ const PRODUCTS: SeedProduct[] = [
   },
 
   {
-    name: "PetMandu Oatmeal Shampoo 250ml",
+    name: "PawMandu Oatmeal Shampoo 250ml",
     species: "dog",
     categoryName: "Grooming",
     price: 480,
@@ -124,7 +124,7 @@ const PRODUCTS: SeedProduct[] = [
     description: "Soap-free formula for sensitive skin, mild oatmeal scent.",
   },
   {
-    name: "PetMandu Deshedding Brush",
+    name: "PawMandu Deshedding Brush",
     species: "dog",
     categoryName: "Grooming",
     price: 550,
@@ -134,7 +134,7 @@ const PRODUCTS: SeedProduct[] = [
   },
 
   {
-    name: "PetMandu Stainless Steel Bowl Set (2pc)",
+    name: "PawMandu Stainless Steel Bowl Set (2pc)",
     species: "dog",
     categoryName: "Bowls & accessories",
     price: 500,
@@ -142,7 +142,7 @@ const PRODUCTS: SeedProduct[] = [
     description: "Non-tip, rust-resistant bowl set for food and water.",
   },
   {
-    name: "PetMandu Slow Feeder Bowl",
+    name: "PawMandu Slow Feeder Bowl",
     species: "dog",
     categoryName: "Bowls & accessories",
     price: 550,
@@ -152,7 +152,7 @@ const PRODUCTS: SeedProduct[] = [
   },
 
   {
-    name: "PetMandu Tuna Flavour Dry Cat Food 1.5kg",
+    name: "PawMandu Tuna Flavour Dry Cat Food 1.5kg",
     species: "cat",
     categoryName: "Dry/wet food",
     price: 1100,
@@ -161,7 +161,7 @@ const PRODUCTS: SeedProduct[] = [
       "Complete adult cat food with tuna as the primary protein source.",
   },
   {
-    name: "PetMandu Chicken Pate Wet Food 85g (Pack of 6)",
+    name: "PawMandu Chicken Pate Wet Food 85g (Pack of 6)",
     species: "cat",
     categoryName: "Dry/wet food",
     price: 650,
@@ -170,7 +170,7 @@ const PRODUCTS: SeedProduct[] = [
       "Grain-free pate in easy-open tins, suitable for all life stages.",
   },
   {
-    name: "PetMandu Kitten Growth Formula 1kg",
+    name: "PawMandu Kitten Growth Formula 1kg",
     species: "cat",
     categoryName: "Dry/wet food",
     price: 850,
@@ -179,7 +179,7 @@ const PRODUCTS: SeedProduct[] = [
   },
 
   {
-    name: "PetMandu Freeze-Dried Chicken Bites 40g",
+    name: "PawMandu Freeze-Dried Chicken Bites 40g",
     species: "cat",
     categoryName: "Treats",
     price: 350,
@@ -187,7 +187,7 @@ const PRODUCTS: SeedProduct[] = [
     description: "Single-ingredient freeze-dried chicken breast, no additives.",
   },
   {
-    name: "PetMandu Salmon Crunch Treats 100g",
+    name: "PawMandu Salmon Crunch Treats 100g",
     species: "cat",
     categoryName: "Treats",
     price: 290,
@@ -196,7 +196,7 @@ const PRODUCTS: SeedProduct[] = [
   },
 
   {
-    name: "PetMandu Feather Wand Toy",
+    name: "PawMandu Feather Wand Toy",
     species: "cat",
     categoryName: "Toys",
     price: 250,
@@ -205,7 +205,7 @@ const PRODUCTS: SeedProduct[] = [
       "Interactive wand with natural feathers for chase-and-pounce play.",
   },
   {
-    name: "PetMandu Catnip Mice (Set of 3)",
+    name: "PawMandu Catnip Mice (Set of 3)",
     species: "cat",
     categoryName: "Toys",
     price: 320,
@@ -214,7 +214,7 @@ const PRODUCTS: SeedProduct[] = [
   },
 
   {
-    name: "PetMandu Clumping Cat Litter 5L",
+    name: "PawMandu Clumping Cat Litter 5L",
     species: "cat",
     categoryName: "Litter",
     price: 650,
@@ -222,7 +222,7 @@ const PRODUCTS: SeedProduct[] = [
     description: "Low-dust bentonite litter with strong odor control.",
   },
   {
-    name: "PetMandu Silica Gel Crystal Litter 4L",
+    name: "PawMandu Silica Gel Crystal Litter 4L",
     species: "cat",
     categoryName: "Litter",
     price: 750,
@@ -232,7 +232,7 @@ const PRODUCTS: SeedProduct[] = [
   },
 
   {
-    name: "PetMandu Waterless Cat Shampoo Spray 200ml",
+    name: "PawMandu Waterless Cat Shampoo Spray 200ml",
     species: "cat",
     categoryName: "Grooming",
     price: 420,
@@ -240,7 +240,7 @@ const PRODUCTS: SeedProduct[] = [
     description: "No-rinse cleansing spray for cats that dislike bathing.",
   },
   {
-    name: "PetMandu Ceramic Cat Bowl",
+    name: "PawMandu Ceramic Cat Bowl",
     species: "cat",
     categoryName: "Bowls & accessories",
     price: 380,
@@ -250,7 +250,7 @@ const PRODUCTS: SeedProduct[] = [
   },
 
   {
-    name: "PetMandu Tropical Flakes 100g",
+    name: "PawMandu Tropical Flakes 100g",
     species: "fish",
     categoryName: "Food",
     price: 280,
@@ -258,7 +258,7 @@ const PRODUCTS: SeedProduct[] = [
     description: "Daily flake food formulated for community tropical fish.",
   },
   {
-    name: "PetMandu Goldfish Pellets 150g",
+    name: "PawMandu Goldfish Pellets 150g",
     species: "fish",
     categoryName: "Food",
     price: 260,
@@ -268,7 +268,7 @@ const PRODUCTS: SeedProduct[] = [
   },
 
   {
-    name: "PetMandu Aquarium Gravel 1kg (Natural)",
+    name: "PawMandu Aquarium Gravel 1kg (Natural)",
     species: "fish",
     categoryName: "Aquarium accessories",
     price: 350,
@@ -277,7 +277,7 @@ const PRODUCTS: SeedProduct[] = [
       "Rounded natural gravel, safe for most freshwater tank setups.",
   },
   {
-    name: "PetMandu Water Conditioner 100ml",
+    name: "PawMandu Water Conditioner 100ml",
     species: "fish",
     categoryName: "Water treatment",
     price: 320,
@@ -286,7 +286,7 @@ const PRODUCTS: SeedProduct[] = [
       "Removes chlorine and chloramine from tap water before adding fish.",
   },
   {
-    name: "PetMandu Mini Aquarium Air Pump",
+    name: "PawMandu Mini Aquarium Air Pump",
     species: "fish",
     categoryName: "Basic equipment",
     price: 1200,

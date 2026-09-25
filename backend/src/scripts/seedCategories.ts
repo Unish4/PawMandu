@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { ENV } from "../config/env";
-import { Category } from "../models/Category";
+import { ENV } from "../config/env.js";
+import { Category } from "../models/Category.js";
 
 const CATEGORIES: { name: string; species: "dog" | "cat" | "fish" }[] = [
   { name: "Dry food", species: "dog" },

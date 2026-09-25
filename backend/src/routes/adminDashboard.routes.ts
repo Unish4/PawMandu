@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { attachUser } from "../middleware/attachUser";
-import { requireAdmin } from "../middleware/requireAdmin";
-import { getDashboardStats } from "../controllers/adminDashboard.controller";
+import { attachUser } from "../middleware/attachUser.js";
+import { requireAdmin } from "../middleware/requireAdmin.js";
+import { getDashboardStats } from "../controllers/adminDashboard.controller.js";
 
 const router = Router();
 router.use(attachUser, requireAdmin);

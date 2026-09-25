@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { Category, Species } from "../models/Category";
+import { Category, Species } from "../models/Category.js";
 
 export const listCategories = async (
   req: Request,

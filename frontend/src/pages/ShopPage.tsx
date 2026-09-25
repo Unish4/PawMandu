@@ -61,8 +61,7 @@ export default function ShopPage() {
   }, [mobileFiltersOpen]);
 
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-  const [lastFetchedPage, setLastFetchedPage] = useState<number>(0);
-  const [prevFiltersKey, setPrevFiltersKey] = useState<string>("");
+  const lastHandledKeyRef = useRef<string>("");
 
   const { data: categories } = useCategories(species || undefined);
 
@@ -80,24 +79,35 @@ export default function ShopPage() {
     limit: 12,
   };
 
-  const { data, isLoading, isFetching, isError, refetch } =
+  const { data, isLoading, isFetching, isPlaceholderData, isError, refetch } =
     useProducts(filters);
 
   const filtersKey = `${species}-${selectedCategories.join(",")}-${sort}-${inStockOnly}-${debouncedSearch}-${debouncedMinPrice}-${debouncedMaxPrice}`;
 
-  if (filtersKey !== prevFiltersKey) {
-    setPrevFiltersKey(filtersKey);
+  useEffect(() => {
     setPage(1);
-    setAllProducts([]);
-    setLastFetchedPage(0);
-  } else if (data && data.pagination.page !== lastFetchedPage) {
-    setLastFetchedPage(data.pagination.page);
-    setAllProducts((prev) => {
-      if (data.pagination.page === 1) return data.products;
-      const existingIds = new Set(prev.map((p) => p._id));
-      return [...prev, ...data.products.filter((p) => !existingIds.has(p._id))];
-    });
-  }
+  }, [filtersKey]);
+
+  useEffect(() => {
+    if (!data || isPlaceholderData) return;
+
+    const responseKey = `${filtersKey}-page-${data.pagination.page}`;
+    if (lastHandledKeyRef.current === responseKey) return;
+
+    lastHandledKeyRef.current = responseKey;
+
+    if (data.pagination.page === 1) {
+      setAllProducts(data.products);
+    } else {
+      setAllProducts((prev) => {
+        const existingIds = new Set(prev.map((p) => p._id));
+        return [
+          ...prev,
+          ...data.products.filter((p) => !existingIds.has(p._id)),
+        ];
+      });
+    }
+  }, [data, isPlaceholderData, filtersKey]);
 
   const toggleCategory = (id: string) => {
     setSelectedCategories((prev) =>
@@ -335,7 +345,13 @@ export default function ShopPage() {
             />
           ) : (
             <>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div
+                className={`grid grid-cols-2 md:grid-cols-4 gap-4 transition-opacity duration-200 ${
+                  isFetching && isPlaceholderData
+                    ? "opacity-50 pointer-events-none"
+                    : ""
+                }`}
+              >
                 {allProducts.map((p) => (
                   <ProductCard key={p._id} product={p} />
                 ))}

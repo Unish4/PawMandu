@@ -1,4 +1,4 @@
-import type { OrderStatus } from "../models/Order";
+import type { OrderStatus } from "../models/Order.js";
 
 export const ORDER_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
   placed: ["processing", "cancelled"],

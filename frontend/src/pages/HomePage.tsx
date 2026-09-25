@@ -3,7 +3,6 @@ import {
   Dog,
   Cat,
   Fish,
-  PawPrint,
   Truck,
   ShieldCheck,
   MessageCircle,
@@ -12,6 +11,7 @@ import {
   ShoppingCart,
   CheckCircle2,
 } from "lucide-react";
+import dogImage from "../assets/Dog.avif";
 
 const SPECIES = [
   {
@@ -65,9 +65,6 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16 md:py-20 text-center md:text-left grid md:grid-cols-2 gap-8 md:gap-12 items-center">
         <div>
-          <span className="inline-block text-xs font-semibold px-3 py-1 rounded-full bg-[var(--color-primary-light)] text-[var(--color-primary)] mb-4">
-            Kathmandu Valley Delivery
-          </span>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-[var(--color-text-primary)] mb-4 leading-tight">
             Everything your pet needs, at{" "}
             <span className="text-[var(--color-primary)]">your door.</span>
@@ -95,13 +92,22 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="hidden md:flex items-center justify-center">
-          <div className="relative w-72 h-72 flex items-center justify-center">
-            <div className="absolute inset-0 rounded-full bg-[var(--color-primary-light)]" />
-            <PawPrint
-              size={140}
-              className="relative text-[var(--color-primary)]"
+        <div className="hidden md:flex relative items-center justify-center">
+          {/* Ambient Warm Background Glow */}
+          <div className="absolute -inset-2 sm:-inset-4 bg-gradient-to-tr from-[var(--color-primary-light)] via-amber-100/60 to-orange-100/40 rounded-3xl blur-2xl opacity-80 -z-10" />
+
+          {/* Main Image Frame */}
+          <div className="relative w-full max-w-sm sm:max-w-md aspect-[4/3] rounded-3xl overflow-hidden shadow-xl border-4 border-white group transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 bg-[var(--color-surface)]">
+            <img
+              src={dogImage}
+              alt="Happy Dog"
+              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500 ease-out"
             />
+            
+            {/* Subtle Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/50 to-transparent" />
+          
           </div>
         </div>
       </section>

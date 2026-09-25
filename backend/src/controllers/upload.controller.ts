@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { cloudinary } from "../config/cloudinary";
-import { ApiError } from "../utils/ApiError";
-import { deleteCloudinaryImage } from "../services/cloudinary.service";
+import { cloudinary } from "../config/cloudinary.js";
+import { ApiError } from "../utils/ApiError.js";
+import { deleteCloudinaryImage } from "../services/cloudinary.service.js";
 
 export const uploadProductImage = async (
   req: Request,

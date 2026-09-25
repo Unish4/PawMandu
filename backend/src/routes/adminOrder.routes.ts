@@ -1,17 +1,17 @@
 import { Router } from "express";
-import { attachUser } from "../middleware/attachUser";
-import { requireAdmin } from "../middleware/requireAdmin";
-import { validateRequest } from "../middleware/validateRequest";
+import { attachUser } from "../middleware/attachUser.js";
+import { requireAdmin } from "../middleware/requireAdmin.js";
+import { validateRequest } from "../middleware/validateRequest.js";
 import {
   listAdminOrdersValidator,
   updateOrderStatusValidator,
-} from "../validators/adminOrder.validator";
+} from "../validators/adminOrder.validator.js";
 import {
   listAdminOrders,
   getAdminOrderById,
   verifyPayment,
   updateOrderStatus,
-} from "../controllers/adminOrder.controller";
+} from "../controllers/adminOrder.controller.js";
 
 const router = Router();
 

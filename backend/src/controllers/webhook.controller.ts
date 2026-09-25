@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { Webhook } from "svix";
-import { User } from "../models/User";
-import { ENV } from "../config/env";
-import { ApiError } from "../utils/ApiError";
+import { User } from "../models/User.js";
+import { ENV } from "../config/env.js";
+import { ApiError } from "../utils/ApiError.js";
 
 interface ClerkUserPayload {
   id: string;

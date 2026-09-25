@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import mongoose from "mongoose";
-import { Order } from "../models/Order";
-import { Cart } from "../models/Cart";
-import { Product } from "../models/Product";
-import { Address } from "../models/Address";
-import { ApiError } from "../utils/ApiError";
-import { calculateDeliveryFee } from "../utils/calculateDeliveryFee";
-import { generateOrderNumber } from "../utils/generateOrderNumber";
-import { cancelOrderAndRestoreStock } from "../services/order.service";
-import { sendOrderConfirmationEmail } from "../services/email.service";
+import { Order } from "../models/Order.js";
+import { Cart } from "../models/Cart.js";
+import { Product } from "../models/Product.js";
+import { Address } from "../models/Address.js";
+import { ApiError } from "../utils/ApiError.js";
+import { calculateDeliveryFee } from "../utils/calculateDeliveryFee.js";
+import { generateOrderNumber } from "../utils/generateOrderNumber.js";
+import { cancelOrderAndRestoreStock } from "../services/order.service.js";
+import { sendOrderConfirmationEmail } from "../services/email.service.js";
 
 export const createOrder = async (
   req: Request,

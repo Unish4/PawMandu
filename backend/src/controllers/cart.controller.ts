@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
-import { Cart, type ICartItem } from "../models/Cart";
-import { Product } from "../models/Product";
-import { ApiError } from "../utils/ApiError";
-import { calculateDeliveryFee } from "../utils/calculateDeliveryFee";
+import { Cart, type ICartItem } from "../models/Cart.js";
+import { Product } from "../models/Product.js";
+import { ApiError } from "../utils/ApiError.js";
+import { calculateDeliveryFee } from "../utils/calculateDeliveryFee.js";
 
 async function getOrCreateCart(userId: string) {
   let cart = await Cart.findOne({ userId });
