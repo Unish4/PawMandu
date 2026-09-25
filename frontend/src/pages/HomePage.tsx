@@ -113,24 +113,26 @@ export default function HomePage() {
       </section>
 
       {/* Species Categories */}
-      <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16 grid grid-cols-3 gap-3 sm:gap-6">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 pb-12 sm:pb-16 grid grid-cols-3 gap-2.5 sm:gap-6">
         {SPECIES.map(({ slug, label, subtitle, Icon, color, bg }) => (
           <Link
             key={slug}
             to={`/shop?species=${slug}`}
-            className="border border-[var(--color-border)] rounded-2xl p-4 sm:p-6 text-center no-underline hover:border-[var(--color-border-strong)] hover:shadow-md transition-all bg-[var(--color-surface)] flex flex-col items-center justify-between"
+            className="border border-[var(--color-border)] rounded-2xl py-5 px-2 sm:py-6 sm:px-6 min-h-[150px] sm:min-h-[170px] text-center no-underline hover:border-[var(--color-border-strong)] hover:shadow-md transition-all bg-[var(--color-surface)] flex flex-col items-center justify-between"
           >
             <div
-              className="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-2.5 rounded-2xl flex items-center justify-center"
+              className="w-11 h-11 sm:w-14 sm:h-14 mx-auto rounded-2xl flex items-center justify-center flex-shrink-0"
               style={{ backgroundColor: bg }}
             >
-              <Icon size={24} style={{ color }} />
+              <Icon size={22} style={{ color }} />
             </div>
-            <div className="text-sm sm:text-base md:text-lg font-bold text-[var(--color-text-primary)]">
-              {label}
-            </div>
-            <div className="text-[11px] sm:text-xs text-[var(--color-text-secondary)] mt-0.5 line-clamp-1">
-              {subtitle}
+            <div className="my-1">
+              <div className="text-sm sm:text-base md:text-lg font-bold text-[var(--color-text-primary)] leading-snug">
+                {label}
+              </div>
+              <div className="text-[11px] sm:text-xs text-[var(--color-text-secondary)] mt-0.5 leading-snug text-center">
+                {subtitle}
+              </div>
             </div>
           </Link>
         ))}
