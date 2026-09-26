@@ -112,6 +112,7 @@ GMAIL_USER=
 GMAIL_APP_PASSWORD=
 
 ARCJET_KEY=
+ADMIN_EMAIL=
 ```
 
 ### Frontend `.env.example`

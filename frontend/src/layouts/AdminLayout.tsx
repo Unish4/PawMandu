@@ -12,6 +12,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import { UserButton } from "@clerk/react";
+import { useAdminDashboardStats } from "../hooks/useAdminDashboard";
 
 const NAV = [
   { to: "/admin", label: "Dashboard", Icon: LayoutDashboard, end: true },
@@ -23,6 +24,7 @@ const NAV = [
 export default function AdminLayout() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const location = useLocation();
+  const { data: stats } = useAdminDashboardStats();
 
   // Close sidebar drawer on route change
   useEffect(() => {
@@ -60,7 +62,9 @@ export default function AdminLayout() {
           <button
             type="button"
             onClick={() => setIsMobileOpen(!isMobileOpen)}
-            aria-label={isMobileOpen ? "Close sidebar menu" : "Open sidebar menu"}
+            aria-label={
+              isMobileOpen ? "Close sidebar menu" : "Open sidebar menu"
+            }
             aria-expanded={isMobileOpen}
             className="p-2 rounded-lg text-neutral-300 hover:text-white hover:bg-white/10 focus:outline-none transition-colors"
           >
@@ -107,9 +111,7 @@ export default function AdminLayout() {
         aria-label="Admin Navigation"
         aria-hidden={!isMobileOpen}
         className={`fixed md:sticky top-0 left-0 bottom-0 z-50 md:z-0 w-64 bg-neutral-900 text-white flex flex-col shrink-0 h-screen transition-transform duration-300 ease-in-out md:translate-x-0 ${
-          isMobileOpen
-            ? "translate-x-0"
-            : "-translate-x-full md:translate-x-0"
+          isMobileOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
         }`}
       >
         {/* Sidebar Header */}
@@ -156,6 +158,11 @@ export default function AdminLayout() {
             >
               <Icon size={18} className="shrink-0" />
               <span>{label}</span>
+              {to === "/admin/orders" && (stats?.pendingVerifications ?? 0) > 0 && (
+                <span className="ml-auto text-[10px] font-bold bg-amber-500 text-white rounded-full min-w-[18px] h-[18px] px-1 flex items-center justify-center">
+                  {stats?.pendingVerifications}
+                </span>
+              )}
             </NavLink>
           ))}
         </nav>
@@ -173,7 +180,9 @@ export default function AdminLayout() {
           <div className="flex items-center justify-between pt-1">
             <div className="flex items-center gap-2">
               <ShieldCheck size={16} className="text-[var(--color-primary)]" />
-              <span className="text-xs font-medium text-neutral-400">Admin Mode</span>
+              <span className="text-xs font-medium text-neutral-400">
+                Admin Mode
+              </span>
             </div>
             <UserButton appearance={{ elements: { avatarBox: "w-8 h-8" } }} />
           </div>

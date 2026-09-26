@@ -12,14 +12,15 @@ interface AdminOrdersResponse {
   };
 }
 
-export function useAdminOrders(filters: {
-  orderStatus?: string;
-  limit?: number;
-}) {
+export function useAdminOrders(
+  filters: { orderStatus?: string; limit?: number },
+  options?: { refetchInterval?: number },
+) {
   return useQuery<AdminOrdersResponse>({
     queryKey: ["admin-orders", filters],
     queryFn: () =>
       api.get("/admin/orders", { params: filters }).then((res) => res.data),
+    refetchInterval: options?.refetchInterval,
   });
 }
 
