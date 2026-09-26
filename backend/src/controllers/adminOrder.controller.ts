@@ -1,8 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import { Order } from "../models/Order.js";
+import { User } from "../models/User.js";
 import { ApiError } from "../utils/ApiError.js";
 import { isValidTransition } from "../constants/orderTransitions.js";
 import { cancelOrderAndRestoreStock } from "../services/order.service.js";
+import {
+  sendPaymentVerifiedEmail,
+  sendOrderDeliveredEmail,
+} from "../services/email.service.js";
 
 export const listAdminOrders = async (
   req: Request,
@@ -74,6 +79,18 @@ export const verifyPayment = async (
     order.paymentStatus = "verified";
     await order.save();
 
+    void (async () => {
+      try {
+        const customer = await User.findById(order.userId);
+        if (customer) await sendPaymentVerifiedEmail(order, customer.email);
+      } catch (err) {
+        console.error(
+          `Failed to send payment verified email for ${order.orderNumber}:`,
+          err,
+        );
+      }
+    })();
+
     res.status(200).json({ success: true, order });
   } catch (error) {
     next(error);
@@ -107,8 +124,23 @@ export const updateOrderStatus = async (
         { new: true },
       );
       if (!updatedOrder) {
-        throw new ApiError(409, "Order status changed before this update");
+        throw new ApiError(409, "Order status changed, please refresh");
       }
+    }
+
+    if (orderStatus === "delivered") {
+      void (async () => {
+        try {
+          const customer = await User.findById(updatedOrder.userId);
+          if (customer)
+            await sendOrderDeliveredEmail(updatedOrder, customer.email);
+        } catch (err) {
+          console.error(
+            `Failed to send order delivered email for ${updatedOrder.orderNumber}:`,
+            err,
+          );
+        }
+      })();
     }
 
     res.status(200).json({ success: true, order: updatedOrder });
