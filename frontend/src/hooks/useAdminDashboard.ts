@@ -11,7 +11,7 @@ interface DashboardStats {
 export function useAdminDashboardStats() {
   return useQuery<DashboardStats>({
     queryKey: ["admin-dashboard-stats"],
-    queryFn: () =>
-      api.get("/admin/dashboard/stats").then((res) => res.data.stats),
+    queryFn: () => api.get("/admin/dashboard/stats").then((res) => res.data.stats),
+    refetchInterval: 20000,
   });
 }

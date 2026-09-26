@@ -1,5 +1,13 @@
 import { Link } from "react-router";
-import { ClipboardList, Wallet, AlertCircle, PackageX, ChevronRight } from "lucide-react";
+import { useRef, useEffect } from "react";
+import toast from "react-hot-toast";
+import {
+  ClipboardList,
+  Wallet,
+  AlertCircle,
+  PackageX,
+  ChevronRight,
+} from "lucide-react";
 import { useAdminDashboardStats } from "../../hooks/useAdminDashboard";
 import { useAdminOrders } from "../../hooks/useAdminOrders";
 import { useAdminProducts } from "../../hooks/useAdminProducts";
@@ -8,7 +16,10 @@ import { PaymentStatusBadge } from "../../components/order/PaymentStatusBadge";
 
 export default function AdminDashboardPage() {
   const { data: stats } = useAdminDashboardStats();
-  const { data: recentOrders } = useAdminOrders({ limit: 5 });
+  const { data: recentOrders } = useAdminOrders(
+    { limit: 5 },
+    { refetchInterval: 20000 },
+  );
   const {
     data: allProducts,
     isLoading: isProductsLoading,
@@ -20,6 +31,18 @@ export default function AdminDashboardPage() {
     .filter((p) => p.isActive && p.stock >= 0 && p.stock <= 5)
     .sort((a, b) => a.stock - b.stock)
     .slice(0, 5);
+
+  const previousOrdersToday = useRef<number | null>(null);
+  useEffect(() => {
+    if (stats === undefined) return;
+    if (
+      previousOrdersToday.current !== null &&
+      stats.ordersToday > previousOrdersToday.current
+    ) {
+      toast.success("New order received!");
+    }
+    previousOrdersToday.current = stats.ordersToday;
+  }, [stats?.ordersToday]);
 
   const cards = [
     {
@@ -76,7 +99,9 @@ export default function AdminDashboardPage() {
               </span>
               <div
                 className={`p-2 rounded-lg ${
-                  c.accent ? "bg-amber-100 text-amber-700" : "bg-neutral-100 text-[var(--color-text-secondary)]"
+                  c.accent
+                    ? "bg-amber-100 text-amber-700"
+                    : "bg-neutral-100 text-[var(--color-text-secondary)]"
                 }`}
               >
                 <c.Icon size={18} />
