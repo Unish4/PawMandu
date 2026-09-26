@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Outlet, NavLink, Link, useLocation } from "react-router";
 import {
   LayoutDashboard,
+  BarChart3,
   Package,
   ClipboardList,
   Boxes,
@@ -16,6 +17,7 @@ import { useAdminDashboardStats } from "../hooks/useAdminDashboard";
 
 const NAV = [
   { to: "/admin", label: "Dashboard", Icon: LayoutDashboard, end: true },
+  { to: "/admin/analytics", label: "Analytics", Icon: BarChart3, end: false },
   { to: "/admin/orders", label: "Orders", Icon: ClipboardList, end: false },
   { to: "/admin/products", label: "Products", Icon: Package, end: false },
   { to: "/admin/inventory", label: "Inventory", Icon: Boxes, end: false },

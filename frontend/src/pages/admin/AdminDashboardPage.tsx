@@ -114,7 +114,7 @@ export default function AdminDashboardPage() {
         ))}
       </div>
 
-      {/* Main Content Grid */}
+      {/* Main Content Grid: Recent Orders & Low Stock */}
       <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-6">
         {/* Recent Orders */}
         <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-4 sm:p-5 shadow-xs flex flex-col justify-between">
