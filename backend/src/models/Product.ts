@@ -19,6 +19,8 @@ export interface IProduct extends Document {
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
+  averageRating: number;
+  reviewCount: number;
 }
 
 const productImageSchema = new Schema<IProductImage>(
@@ -67,6 +69,8 @@ const productSchema = new Schema<IProduct>(
     description: { type: String, trim: true, maxlength: 2000 },
     images: { type: [productImageSchema], default: [] },
     isActive: { type: Boolean, default: true },
+    averageRating: { type: Number, default: 0 },
+    reviewCount: { type: Number, default: 0 },
   },
   { timestamps: true },
 );

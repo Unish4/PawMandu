@@ -16,6 +16,8 @@ export interface Product {
   description?: string;
   images: ProductImage[];
   isActive: boolean;
+  averageRating: number;
+  reviewCount: number;
 }
 
 export interface ProductFilters {
@@ -39,7 +41,6 @@ interface ProductsResponse {
     totalPages: number;
   };
 }
-
 
 export function useProducts(
   filters: ProductFilters,
