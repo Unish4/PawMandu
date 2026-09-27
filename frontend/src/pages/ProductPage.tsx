@@ -7,6 +7,8 @@ import { ProductImage } from "../components/product/ProductImage";
 import { useAuth } from "@clerk/react";
 import toast from "react-hot-toast";
 import { useAddToCart, useCartQuantity } from "../hooks/useCart";
+import { ReviewsSection } from "../components/product/ReviewsSection";
+import { StarRating } from "../components/product/StarRating";
 
 const SPECIES_STYLE: Record<
   string,
@@ -143,6 +145,21 @@ export default function ProductPage() {
           <h1 className="text-2xl font-bold text-[var(--color-text-primary)] mb-2">
             {product.name}
           </h1>
+          {product.reviewCount > 0 && (
+            <a 
+              href="#reviews" 
+              className="flex items-center gap-1.5 mb-3 w-fit no-underline group"
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('reviews')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+            >
+              <StarRating rating={product.averageRating} size={14} />
+              <span className="text-sm text-[var(--color-text-secondary)] group-hover:text-[var(--color-primary)] transition-colors">
+                {product.averageRating.toFixed(1)} ({product.reviewCount} review{product.reviewCount !== 1 ? "s" : ""})
+              </span>
+            </a>
+          )}
           <p className="text-2xl font-bold text-[var(--color-text-primary)] mb-4">
             Rs {product.price.toLocaleString("en-IN")}
           </p>
@@ -194,8 +211,8 @@ export default function ProductPage() {
           )}
 
           <p className="text-xs text-[var(--color-text-muted)]">
-            Fast delivery in Kathmandu Valley. Any questions? Message us
-            on WhatsApp.
+            Fast delivery in Kathmandu Valley. Any questions? Message us on
+            WhatsApp.
           </p>
         </div>
       </div>
@@ -212,6 +229,13 @@ export default function ProductPage() {
           </div>
         </div>
       )}
+      <div id="reviews">
+        <ReviewsSection
+          productId={product._id}
+          averageRating={product.averageRating}
+          reviewCount={product.reviewCount}
+        />
+      </div>
     </div>
   );
 }

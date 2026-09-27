@@ -4,7 +4,7 @@ import { useAuth } from "@clerk/react";
 import { useNavigate } from "react-router";
 import toast from "react-hot-toast";
 import { useAddToCart, useCartQuantity } from "../../hooks/useCart";
-
+import { StarRating } from "./StarRating";
 import { ProductImage } from "./ProductImage";
 
 const SPECIES_STYLE: Record<
@@ -99,6 +99,14 @@ export function ProductCard({ product }: { product: Product }) {
           <h3 className="text-sm font-medium text-[var(--color-text-primary)] line-clamp-2">
             {product.name}
           </h3>
+          {product.reviewCount > 0 && (
+            <div className="flex items-center gap-1 mt-1">
+              <StarRating rating={product.averageRating} size={12} />
+              <span className="text-xs text-[var(--color-text-muted)]">
+                ({product.reviewCount})
+              </span>
+            </div>
+          )}
         </div>
       </Link>
       <div className="p-3 pt-2 flex items-center justify-between">

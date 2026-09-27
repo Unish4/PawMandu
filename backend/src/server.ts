@@ -19,6 +19,7 @@ import adminOrderRouter from "./routes/adminOrder.routes.js";
 import adminProductRouter from "./routes/adminProduct.routes.js";
 import adminDashboardRouter from "./routes/adminDashboard.routes.js";
 import uploadRouter from "./routes/upload.routes.js";
+import { reviewRouter, reviewByIdRouter } from "./routes/review.routes.js";
 import { transporter } from "./config/email.js";
 
 const app = express();
@@ -75,6 +76,8 @@ app.use("/api/admin/orders", adminOrderRouter);
 app.use("/api/admin/products", adminProductRouter);
 app.use("/api/admin/dashboard", adminDashboardRouter);
 app.use("/api/admin/uploads", uploadRouter);
+app.use("/api/products/:productId/reviews", reviewRouter);
+app.use("/api/reviews", reviewByIdRouter);
 
 app.use(notFoundHandler);
 app.use(errorHandler);
